@@ -81,7 +81,7 @@ export default function Services() {
             {/* Main Content - Appears after zoom */}
             <motion.div
                 style={{ opacity: contentOpacity, y: contentY }}
-                className="relative z-20 max-w-7xl mx-auto px-4 -mt-[50vh] pb-24"
+                className="relative z-20 max-w-7xl mx-auto px-4 pb-24"
             >
                 {/* Background Grid Lines */}
                 <div className="absolute inset-0 pointer-events-none max-w-7xl mx-auto border-x border-white/10 hidden md:block">

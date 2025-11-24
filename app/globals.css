@@ -24,3 +24,22 @@ body {
   color: var(--foreground);
   font-family: var(--font-space-grotesk), Helvetica, sans-serif;
 }
+
+/* Custom mask for marquee fade effect */
+.mask-linear-fade {
+  -webkit-mask: linear-gradient(to right, transparent 0%, black 20%, black 80%, transparent 100%);
+  mask: linear-gradient(to right, transparent 0%, black 20%, black 80%, transparent 100%);
+}
+
+.mask-linear-fade-rtl {
+  -webkit-mask: linear-gradient(to right, transparent 0%, black 20%, black 80%, transparent 100%);
+  mask: linear-gradient(to right, transparent 0%, black 20%, black 80%, transparent 100%);
+}
+
+/* Line clamp utility */
+.line-clamp-3 {
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}

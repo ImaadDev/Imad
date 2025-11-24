@@ -103,7 +103,7 @@ export default function Experience() {
       {/* Main Content - Appears after zoom */}
       <motion.div
         style={{ opacity: contentOpacity, y: contentY }}
-        className="relative z-20 max-w-4xl mx-auto px-4 -mt-[50vh] pb-24"
+        className="relative z-20 max-w-4xl mx-auto px-4  pb-12"
       >
 
         {/* Background Grid Lines (Vertical) */}

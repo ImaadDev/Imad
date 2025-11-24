@@ -17,7 +17,9 @@ export default function Navbar() {
     { name: isArabic ? 'عني' : 'ABOUT', href: '#about' },
     { name: isArabic ? 'المشاريع' : 'PROJECTS', href: '#projects' },
     { name: isArabic ? 'الخبرات' : 'EXPERIENCE', href: '#experience' },
-    { name: isArabic ? 'تواصل' : 'CONTACT', href: '#contact' }
+    { name: isArabic ? 'تواصل' : 'CONTACT', href: '#contact' },
+    { name: isArabic ? 'مقالات' : 'BLOGS', href: '/blogs' }
+
   ];
 
   // System Time & Scroll Logic

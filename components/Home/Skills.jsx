@@ -29,20 +29,18 @@ const ROW_2 = [
 
 const SkillCard = ({ skill }) => (
     <div className="group relative mx-4">
-        {/* Hover Glow Effect */}
-        <div className="absolute inset-0 bg-cyan-500/20 blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+        
+        {/* Card Content: Smoother hover background, sharp corners, simplified transition */}
+        <div className="relative flex items-center gap-6 px-8 py-6 bg-white/5 border border-white/10 group-hover:bg-cyan-900/10 group-hover:border-cyan-400/50 transition duration-200 min-w-[280px]">
 
-        {/* Card Content */}
-        <div className="relative flex items-center gap-6 px-8 py-6 bg-white/5 border border-white/10 backdrop-blur-sm hover:border-cyan-400/50 transition-colors duration-300 min-w-[280px]">
-
-            {/* Icon Container */}
-            <div className={`p-3 bg-white/5 border border-white/10 group-hover:scale-110 transition-transform duration-300 ${skill.color}`}>
+            {/* Icon Container: Subtle scale effect for less lag */}
+            <div className={`p-3 bg-white/5 border border-white/10 group-hover:scale-[1.05] transition-transform duration-200 ${skill.color}`}>
                 <skill.Icon size={40} strokeWidth={1.5} />
             </div>
 
             {/* Text Info */}
             <div className="flex flex-col">
-                <span className="text-xl font-black tracking-tight text-white group-hover:text-cyan-400 transition-colors">
+                <span className="text-xl font-bold tracking-tight text-white group-hover:text-cyan-400 transition-colors duration-200">
                     {skill.name}
                 </span>
                 <span className="text-xs font-mono text-gray-500 tracking-widest uppercase">
@@ -50,9 +48,9 @@ const SkillCard = ({ skill }) => (
                 </span>
             </div>
 
-            {/* Decorative Corner */}
+            {/* Decorative Corner: Subtle point, no heavy shadow */}
             <div className="absolute top-0 right-0 p-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                <div className="w-2 h-2 bg-cyan-400 shadow-[0_0_10px_rgba(34,211,238,0.8)]" />
+                <div className="w-2 h-2 bg-cyan-400" />
             </div>
         </div>
     </div>
@@ -60,10 +58,11 @@ const SkillCard = ({ skill }) => (
 
 const MarqueeRow = ({ items, direction = "left", speed = 50 }) => {
     return (
-        <div className="flex overflow-hidden whitespace-nowrap py-4 mask-linear-fade">
+        <div className="flex overflow-hidden whitespace-nowrap py-4 mask-linear-fade" style={{ direction: 'ltr' }}>
             <motion.div
                 className="flex"
                 animate={{
+                    // Framer Motion handles translation using performant CSS properties (translate3d)
                     x: direction === "left" ? ["0%", "-50%"] : ["-50%", "0%"]
                 }}
                 transition={{
@@ -72,7 +71,8 @@ const MarqueeRow = ({ items, direction = "left", speed = 50 }) => {
                     repeat: Infinity,
                 }}
             >
-                {[...items, ...items, ...items, ...items].map((skill, idx) => (
+                {/* Two repetitions ensure a seamless loop */}
+                {[...items, ...items].map((skill, idx) => (
                     <SkillCard key={`${skill.name}-${idx}`} skill={skill} />
                 ))}
             </motion.div>
@@ -87,8 +87,8 @@ export default function Skills() {
     return (
         <section className="min-h-[60vh] bg-[#050505] py-24 relative overflow-hidden flex flex-col justify-center">
 
-            {/* Background Elements */}
-            <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(0,255,255,0.03),transparent_70%)]" />
+            {/* Background Elements: Reduced light for performance */}
+            <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(0,255,255,0.01),transparent_70%)]" />
 
             {/* Header */}
             <div className="max-w-7xl mx-auto px-6 w-full mb-16 relative z-10">
