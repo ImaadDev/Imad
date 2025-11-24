@@ -5,6 +5,7 @@ import { useInView } from 'react-intersection-observer';
 import { Calendar, Clock, ArrowRight, Eye, Hash, Cpu, Mail } from 'lucide-react'; // Added Mail, Cpu, Hash for technical aesthetic
 import { usePathname } from 'next/navigation';
 import Link from 'next/link';
+import Image from 'next/image';
 
 // --- Utility Component for Section Animation ---
 function AnimatedSection({ children, delay = 0, className = "" }) {
@@ -69,9 +70,11 @@ function BlogCard({ blog, index }) {
         {/* Featured Image */}
         {blog.images?.[0]?.asset?.url && (
           <div className="relative h-48 overflow-hidden border-b border-white/10">
-            <img
+            <Image
               src={blog.images[0].asset.url}
               alt={blog.title?.[isArabic ? 'ar' : 'en'] || 'Blog thumbnail'}
+              width={400}
+              height={200}
               className="w-full h-full object-cover opacity-70 group-hover:opacity-100 group-hover:scale-[1.03] transition-transform duration-500"
             />
             {/* Asset ID Overlay */}

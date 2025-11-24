@@ -4,6 +4,7 @@ import React from 'react';
 import { motion } from 'framer-motion';
 import { Calendar, Clock, Eye, ArrowLeft, Share2, Bookmark, ThumbsUp, Code, Hash } from 'lucide-react'; // Added Code, Hash for technical aesthetic
 import Link from 'next/link';
+import Image from 'next/image';
 
 const BlogDetails = ({ blog, relatedBlogs = [], language, slug }) => {
   const isArabic = language === 'ar';
@@ -196,10 +197,13 @@ const BlogDetails = ({ blog, relatedBlogs = [], language, slug }) => {
               transition={{ duration: 0.8, delay: 0.2 }}
               className="w-full max-w-4xl mx-auto relative z-10 border-4 border-cyan-400/20"
             >
-              <img
+              <Image
                 src={blog.images?.[0]?.asset?.url || blog.images?.[0]}
                 alt={blog.title?.[isArabic ? 'ar' : 'en'] || 'Blog featured image'}
+                width={1200}
+                height={600}
                 className="w-full h-auto max-h-[500px] object-cover"
+                priority
               />
             </motion.div>
           )}
