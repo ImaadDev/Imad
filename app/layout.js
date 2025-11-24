@@ -5,6 +5,7 @@ import "./globals.css";
 import ClientProvider from "../components/ClientProvider";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
+import GoogleAnalytics from "@/components/GoogleAnalytics";
 import { usePathname } from "next/navigation";
 
 const spaceGrotesk = Space_Grotesk({
@@ -18,9 +19,11 @@ export default function RootLayout({ children }) {
 
   return (
     <html lang={isArabic ? 'ar' : 'en'} dir={isArabic ? 'rtl' : 'ltr'}>
+       <GoogleAnalytics/>
       <body
         className={`${spaceGrotesk.variable} antialiased`}
       >
+       
         <Navbar />
         <ClientProvider>{children}</ClientProvider>
         <Footer />
