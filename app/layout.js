@@ -1,23 +1,23 @@
+'use client';
+
 import { Space_Grotesk } from "next/font/google";
 import "./globals.css";
 import ClientProvider from "../components/ClientProvider";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
-
+import { usePathname } from "next/navigation";
 
 const spaceGrotesk = Space_Grotesk({
   variable: "--font-space-grotesk",
   subsets: ["latin"]
 })
 
-export const metadata = {
-  title: "My Portfolio",
-  description: "Created with Next.js, Lenis, and Framer Motion",
-};
-
 export default function RootLayout({ children }) {
+  const pathname = usePathname();
+  const isArabic = pathname?.startsWith("/ar");
+
   return (
-    <html lang="en">
+    <html lang={isArabic ? 'ar' : 'en'} dir={isArabic ? 'rtl' : 'ltr'}>
       <body
         className={`${spaceGrotesk.variable} antialiased`}
       >

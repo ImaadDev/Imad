@@ -2,18 +2,23 @@
 
 import { useState, useEffect, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-
-const navLinks = [
-  { name: 'ABOUT', href: '#about' },
-  { name: 'PROJECTS', href: '#projects' },
-  { name: 'EXPERIENCE', href: '#experience' },
-  { name: 'CONTACT', href: '#contact' }
-];
+import { usePathname, useRouter } from 'next/navigation';
 
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
   const [time, setTime] = useState("");
   const [scrolled, setScrolled] = useState(false);
+
+  const pathname = usePathname();
+  const router = useRouter();
+  const isArabic = pathname?.startsWith("/ar");
+
+  const navLinks = [
+    { name: isArabic ? 'عني' : 'ABOUT', href: '#about' },
+    { name: isArabic ? 'المشاريع' : 'PROJECTS', href: '#projects' },
+    { name: isArabic ? 'الخبرات' : 'EXPERIENCE', href: '#experience' },
+    { name: isArabic ? 'تواصل' : 'CONTACT', href: '#contact' }
+  ];
 
   // System Time & Scroll Logic
   const updateTime = useCallback(() => {
@@ -37,6 +42,12 @@ export default function Navbar() {
     };
   }, [updateTime]);
 
+  const toggleLanguage = () => {
+    const newLocale = isArabic ? 'en' : 'ar';
+    const newPath = pathname.replace(/^\/(en|ar)/, `/${newLocale}`);
+    router.push(newPath);
+  };
+
   return (
     <>
       {/* 1. FIXED NAVBAR HEADER (ALWAYS VISIBLE) 
@@ -49,8 +60,14 @@ export default function Navbar() {
         animate={{ y: 0 }}
         transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
       >
-        <div className="max-w-7xl mx-auto px-4 md:px-6 h-20 flex items-center justify-end">
-          {/* Using justify-end ensures the content is pushed to the far right */}
+        <div className="max-w-7xl mx-auto px-4 md:px-6 h-20 flex items-center justify-between">
+          {/* Language Toggle */}
+          <button
+            onClick={toggleLanguage}
+            className="font-mono text-xs font-bold text-white border border-white/20 px-3 py-1 hover:bg-white hover:text-black transition-colors"
+          >
+            {isArabic ? 'ENGLISH' : 'العربية'}
+          </button>
 
           <div className="flex items-center gap-8 relative z-50">
 
@@ -60,7 +77,7 @@ export default function Navbar() {
               onClick={() => setIsOpen(!isOpen)}
             >
               <span className="font-mono text-xs font-bold text-white hidden md:block group-hover:text-cyan-400 transition-colors">
-                {isOpen ? 'CLOSE' : 'MENU'}
+                {isOpen ? (isArabic ? 'إغلاق' : 'CLOSE') : (isArabic ? 'القائمة' : 'MENU')}
               </span>
               <div className="flex flex-col gap-1.5 w-8">
                 <motion.div
@@ -130,15 +147,16 @@ export default function Navbar() {
                   transition={{ delay: 0.5 }}
                   className="hidden lg:flex flex-col justify-center border-l border-white/10 pl-12 h-1/2"
                 >
-                  <p className="font-mono text-cyan-400 mb-4 text-sm">// CURRENT_STATUS</p>
+                  <p className="font-mono text-cyan-400 mb-4 text-sm">// {isArabic ? 'الحالة الحالية' : 'CURRENT_STATUS'}</p>
                   <h3 className="text-3xl font-bold text-white mb-6">
-                    Building digital experiences that <br />
-                    bridge function and aesthetics.
+                    {isArabic
+                      ? 'بناء تجارب رقمية تجمع بين الوظيفة والجماليات.'
+                      : 'Building digital experiences that bridge function and aesthetics.'}
                   </h3>
                   <div className="space-y-4 font-mono text-sm text-gray-400">
-                    <p>AVAILABLE FOR FREELANCE</p>
-                    <p>BASED IN WORLDWIDE</p>
-                    <p>SYSTEM VER. 2.5</p>
+                    <p>{isArabic ? 'متاح للعمل الحر' : 'AVAILABLE FOR FREELANCE'}</p>
+                    <p>{isArabic ? 'مقرها في جميع أنحاء العالم' : 'BASED IN WORLDWIDE'}</p>
+                    <p>{isArabic ? 'إصدار النظام 2.5' : 'SYSTEM VER. 2.5'}</p>
                   </div>
                 </motion.div>
               </div>
@@ -148,7 +166,7 @@ export default function Navbar() {
             <div className="h-24 border-t border-white/10 flex items-center px-6 relative z-10 bg-black/50 backdrop-blur-sm">
               <div className="max-w-7xl mx-auto w-full flex justify-between items-center">
                 <div>
-                  <p className="text-gray-500 font-mono text-[10px] uppercase mb-1">Get in touch</p>
+                  <p className="text-gray-500 font-mono text-[10px] uppercase mb-1">{isArabic ? 'تواصل معي' : 'Get in touch'}</p>
                   <a href="mailto:hello@imad.dev" className="text-white font-bold hover:text-cyan-400 transition-colors">hello@imad.dev</a>
                 </div>
                 <div className="flex gap-6 text-white text-sm font-bold">

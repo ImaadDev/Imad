@@ -1,8 +1,12 @@
 'use client';
 
 import { motion } from 'framer-motion';
+import { usePathname } from 'next/navigation';
 
 export default function Footer() {
+    const pathname = usePathname();
+    const isArabic = pathname?.startsWith("/ar");
+
     const scrollToTop = () => {
         window.scrollTo({
             top: 0,
@@ -13,11 +17,11 @@ export default function Footer() {
     const currentYear = new Date().getFullYear();
 
     const footerLinks = [
-        { name: 'Home', href: '/' },
-        { name: 'About', href: '#about' },
-        { name: 'Projects', href: '#projects' },
-        { name: 'Experience', href: '#experience' },
-        { name: 'Contact', href: '#contact' }
+        { name: isArabic ? 'الرئيسية' : 'Home', href: '/' },
+        { name: isArabic ? 'عني' : 'About', href: '#about' },
+        { name: isArabic ? 'المشاريع' : 'Projects', href: '#projects' },
+        { name: isArabic ? 'الخبرات' : 'Experience', href: '#experience' },
+        { name: isArabic ? 'تواصل' : 'Contact', href: '#contact' }
     ];
 
     const socialLinks = [
@@ -41,18 +45,22 @@ export default function Footer() {
                     <div className="md:col-span-2 flex flex-col justify-between">
                         <div>
                             <h2 className="text-3xl md:text-5xl font-black tracking-tighter mb-6">
-                                IMAD HUSSAIN KHAN<span className="text-cyan-400">.</span>
+                                {isArabic ? "عماد حسين خان" : "IMAD HUSSAIN KHAN"}<span className="text-cyan-400">.</span>
                             </h2>
                             <p className="text-gray-400 max-w-sm font-mono text-sm leading-relaxed">
-                                Full Stack Developer specializing in MERN & Next.js.
-                                Focused on performance, accessibility, and modern aesthetics.
+                                {isArabic
+                                    ? "مطور واجهات متكامل متخصص في MERN و Next.js. يركز على الأداء، سهولة الوصول، والجماليات الحديثة."
+                                    : "Full Stack Developer specializing in MERN & Next.js. Focused on performance, accessibility, and modern aesthetics."
+                                }
                             </p>
                         </div>
                     </div>
 
                     {/* Navigation Links */}
                     <div>
-                        <h3 className="font-mono text-xs text-cyan-400 mb-6 tracking-wider">NAVIGATION</h3>
+                        <h3 className="font-mono text-xs text-cyan-400 mb-6 tracking-wider">
+                            {isArabic ? "التنقل" : "NAVIGATION"}
+                        </h3>
                         <ul className="space-y-4">
                             {footerLinks.map((link) => (
                                 <li key={link.name}>
@@ -70,7 +78,9 @@ export default function Footer() {
 
                     {/* Social Links */}
                     <div>
-                        <h3 className="font-mono text-xs text-cyan-400 mb-6 tracking-wider">SOCIAL</h3>
+                        <h3 className="font-mono text-xs text-cyan-400 mb-6 tracking-wider">
+                            {isArabic ? "التواصل الاجتماعي" : "SOCIAL"}
+                        </h3>
                         <ul className="space-y-4">
                             {socialLinks.map((link) => (
                                 <li key={link.name}>
@@ -90,14 +100,14 @@ export default function Footer() {
                 {/* Bottom Bar */}
                 <div className="border-t border-white/10 pt-8 flex flex-col md:flex-row justify-between items-center gap-6">
                     <p className="text-gray-500 text-xs font-mono">
-                        © {currentYear} IMAD HUSSAIN KHAN. ALL RIGHTS RESERVED.
+                        © {currentYear} {isArabic ? "عماد حسين خان. جميع الحقوق محفوظة." : "IMAD HUSSAIN KHAN. ALL RIGHTS RESERVED."}
                     </p>
 
                     <button
                         onClick={scrollToTop}
                         className="group flex items-center gap-2 text-xs font-bold tracking-widest hover:text-cyan-400 transition-colors duration-300"
                     >
-                        BACK TO TOP
+                        {isArabic ? "العودة للأعلى" : "BACK TO TOP"}
                         <motion.span
                             animate={{ y: [0, -4, 0] }}
                             transition={{ repeat: Infinity, duration: 1.5, ease: "easeInOut" }}

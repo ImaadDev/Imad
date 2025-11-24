@@ -6,6 +6,7 @@ import {
     Lock, Cloud, Aperture, Smartphone, IterationCcw,
     Layers, Code, Shield, Globe, Terminal, Zap
 } from 'lucide-react';
+import { usePathname } from 'next/navigation';
 
 // Split skills into two logical rows for visual balance
 const ROW_1 = [
@@ -80,6 +81,9 @@ const MarqueeRow = ({ items, direction = "left", speed = 50 }) => {
 };
 
 export default function Skills() {
+    const pathname = usePathname();
+    const isArabic = pathname?.startsWith("/ar");
+
     return (
         <section className="min-h-[60vh] bg-[#050505] py-24 relative overflow-hidden flex flex-col justify-center">
 
@@ -90,12 +94,14 @@ export default function Skills() {
             <div className="max-w-7xl mx-auto px-6 w-full mb-16 relative z-10">
                 <div className="flex items-center gap-3 mb-4">
                     <div className="h-[1px] w-12 bg-cyan-400" />
-                    <span className="font-mono text-cyan-400 text-sm tracking-widest">TECHNICAL_ARSENAL</span>
+                    <span className="font-mono text-cyan-400 text-sm tracking-widest">
+                        {isArabic ? "الترسانة التقنية" : "TECHNICAL_ARSENAL"}
+                    </span>
                 </div>
                 <h2 className="text-5xl md:text-7xl font-black text-white tracking-tighter uppercase">
-                    Full Stack <br />
+                    {isArabic ? "قدرات" : "Full Stack"} <br />
                     <span className="text-transparent bg-clip-text bg-gradient-to-r from-white to-gray-600">
-                        Capabilities
+                        {isArabic ? "التطوير المتكامل" : "Capabilities"}
                     </span>
                 </h2>
             </div>

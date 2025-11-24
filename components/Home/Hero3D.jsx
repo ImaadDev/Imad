@@ -2,8 +2,12 @@
 
 import { motion } from 'framer-motion';
 import BackgroundVideo from '../BgVideo';
+import { usePathname } from 'next/navigation';
 
 export default function CreativeHeroVideo() {
+  const pathname = usePathname();
+  const isArabic = pathname?.startsWith("/ar");
+
   return (
     <div className="relative h-screen w-full flex flex-col items-center justify-center overflow-hidden bg-black">
 
@@ -61,7 +65,7 @@ export default function CreativeHeroVideo() {
             }}
             className="text-4xl sm:text-6xl md:text-8xl lg:text-9xl font-black tracking-tighter text-white mix-blend-difference select-none leading-none text-center"
           >
-            IMAD KHAN
+            {isArabic ? "عماد خان" : "IMAD KHAN"}
           </motion.h1>
         </motion.div>
 
@@ -78,7 +82,9 @@ export default function CreativeHeroVideo() {
         >
           <span className="h-[1px] w-8 sm:w-12 bg-white"></span>
           <p className="font-mono text-xs sm:text-sm md:text-base text-white tracking-widest uppercase text-center">
-            Full Stack Developer | MERN & Next.js Specialist
+            {isArabic
+              ? "مطور واجهات متكامل | متخصص في MERN و Next.js"
+              : "Full Stack Developer | MERN & Next.js Specialist"}
           </p>
           <span className="h-[1px] w-8 sm:w-12 bg-white"></span>
         </motion.div>

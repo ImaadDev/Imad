@@ -2,51 +2,74 @@
 
 import { useState, useRef } from 'react';
 import { motion, useScroll, useTransform } from 'framer-motion';
-
-const experienceData = [
-  {
-    id: 1,
-    title: "Full Stack Web Developer",
-    company: "Creativemark | Riyadh, KSA",
-    dates: "08/2025 - Present",
-    keyStack: ["Next.js", "Node.js", "MongoDB", "Docker"],
-    responsibilities: [
-      "Built scalable dashboards using Next.js, Node.js, and MongoDB for 1K+ active users.",
-      "Implemented JWT-based authentication and optimized MongoDB queries, reducing API response time by 25%.",
-      "Automated deployments using Docker and GitHub Actions, significantly improving release cycle efficiency."
-    ]
-  },
-  {
-    id: 2,
-    title: "Full Stack Web Developer",
-    company: "Eccentric Technologies | Riyadh, KSA",
-    dates: "08/2022 - 11/2024",
-    keyStack: ["React.js", "Node.js", "Express", "Docker"],
-    responsibilities: [
-      "Developed web apps using React.js / Next.js, improving page load speed by 20%.",
-      "Integrated REST APIs with Node.js & Express, increasing data reliability with 99% uptime.",
-      "Used Docker, reducing deployment issues and manual errors by 30%.",
-      "Built Tailwind CSS UI components, speeding up UI development by 35%."
-    ]
-  },
-  {
-    id: 3,
-    title: "Full Stack Web Developer",
-    company: "Mazhar Enterprises | Peshawar, PK",
-    dates: "02/2020 - 06/2022",
-    keyStack: ["React.js", "Node.js", "MongoDB", "Tailwind"],
-    responsibilities: [
-      "Delivered 10+ production-level web apps (React.js / Next.js) increasing user engagement by 30%.",
-      "Built secure REST APIs using Node.js + MongoDB, maintaining 99.9% system uptime.",
-      "Implemented code splitting & lazy loading, improving loading speed by 30%.",
-      "Designed responsive UI with Tailwind CSS, reducing redesign revisions by 25%."
-    ]
-  }
-];
+import { usePathname } from 'next/navigation';
 
 export default function Experience() {
   const [expandedId, setExpandedId] = useState(null);
   const containerRef = useRef(null);
+  const pathname = usePathname();
+  const isArabic = pathname?.startsWith("/ar");
+
+  const experienceData = [
+    {
+      id: 1,
+      title: isArabic ? "مطور ويب متكامل" : "Full Stack Web Developer",
+      company: isArabic ? "كرييتف مارك | الرياض، السعودية" : "Creativemark | Riyadh, KSA",
+      dates: isArabic ? "08/2025 - الحاضر" : "08/2025 - Present",
+      keyStack: ["Next.js", "Node.js", "MongoDB", "Docker"],
+      responsibilities: isArabic
+        ? [
+          "بناء لوحات تحكم قابلة للتوسع باستخدام Next.js و Node.js و MongoDB لأكثر من 1000 مستخدم نشط.",
+          "تنفيذ المصادقة المستندة إلى JWT وتحسين استعلامات MongoDB، مما قلل وقت استجابة API بنسبة 25%.",
+          "أتمتة عمليات النشر باستخدام Docker و GitHub Actions، مما أدى إلى تحسين كفاءة دورة الإصدار بشكل كبير."
+        ]
+        : [
+          "Built scalable dashboards using Next.js, Node.js, and MongoDB for 1K+ active users.",
+          "Implemented JWT-based authentication and optimized MongoDB queries, reducing API response time by 25%.",
+          "Automated deployments using Docker and GitHub Actions, significantly improving release cycle efficiency."
+        ]
+    },
+    {
+      id: 2,
+      title: isArabic ? "مطور ويب متكامل" : "Full Stack Web Developer",
+      company: isArabic ? "إكسنتريك تكنولوجيز | الرياض، السعودية" : "Eccentric Technologies | Riyadh, KSA",
+      dates: "08/2022 - 11/2024",
+      keyStack: ["React.js", "Node.js", "Express", "Docker"],
+      responsibilities: isArabic
+        ? [
+          "تطوير تطبيقات الويب باستخدام React.js / Next.js، مما أدى إلى تحسين سرعة تحميل الصفحة بنسبة 20%.",
+          "دمج واجهات برمجة التطبيقات REST مع Node.js & Express، مما زاد من موثوقية البيانات مع وقت تشغيل بنسبة 99%.",
+          "استخدام Docker، مما قلل من مشاكل النشر والأخطاء اليدوية بنسبة 30%.",
+          "بناء مكونات واجهة المستخدم Tailwind CSS، مما أدى إلى تسريع تطوير واجهة المستخدم بنسبة 35%."
+        ]
+        : [
+          "Developed web apps using React.js / Next.js, improving page load speed by 20%.",
+          "Integrated REST APIs with Node.js & Express, increasing data reliability with 99% uptime.",
+          "Used Docker, reducing deployment issues and manual errors by 30%.",
+          "Built Tailwind CSS UI components, speeding up UI development by 35%."
+        ]
+    },
+    {
+      id: 3,
+      title: isArabic ? "مطور ويب متكامل" : "Full Stack Web Developer",
+      company: isArabic ? "مشاريع مظهر | بيشاور، باكستان" : "Mazhar Enterprises | Peshawar, PK",
+      dates: "02/2020 - 06/2022",
+      keyStack: ["React.js", "Node.js", "MongoDB", "Tailwind"],
+      responsibilities: isArabic
+        ? [
+          "تسليم أكثر من 10 تطبيقات ويب بمستوى الإنتاج (React.js / Next.js) مما زاد من تفاعل المستخدمين بنسبة 30%.",
+          "بناء واجهات برمجة تطبيقات REST آمنة باستخدام Node.js + MongoDB، مع الحفاظ على وقت تشغيل النظام بنسبة 99.9%.",
+          "تنفيذ تقسيم الكود والتحميل الكسول، مما أدى إلى تحسين سرعة التحميل بنسبة 30%.",
+          "تصميم واجهة مستخدم متجاوبة مع Tailwind CSS، مما قلل من مراجعات إعادة التصميم بنسبة 25%."
+        ]
+        : [
+          "Delivered 10+ production-level web apps (React.js / Next.js) increasing user engagement by 30%.",
+          "Built secure REST APIs using Node.js + MongoDB, maintaining 99.9% system uptime.",
+          "Implemented code splitting & lazy loading, improving loading speed by 30%.",
+          "Designed responsive UI with Tailwind CSS, reducing redesign revisions by 25%."
+        ]
+    }
+  ];
 
   const { scrollYProgress } = useScroll({
     target: containerRef,
@@ -73,7 +96,7 @@ export default function Experience() {
           style={{ scale, opacity }}
           className="text-[15vw] font-black uppercase tracking-tighter text-white mix-blend-difference leading-none"
         >
-          EXPERIENCE
+          {isArabic ? "الخبرات" : "EXPERIENCE"}
         </motion.div>
       </div>
 
@@ -90,8 +113,12 @@ export default function Experience() {
 
         {/* Header Section */}
         <div className="mb-16 border-b border-white/20 pb-4 relative bg-[#0a0a0a]/80 backdrop-blur-sm">
-          <h2 className="text-sm font-mono text-gray-400 tracking-widest uppercase mb-2">// EXPERIENCE LOG</h2>
-          <h3 className="text-5xl font-black uppercase tracking-tight">Career Data</h3>
+          <h2 className="text-sm font-mono text-gray-400 tracking-widest uppercase mb-2">
+            // {isArabic ? "سجل الخبرات" : "EXPERIENCE LOG"}
+          </h2>
+          <h3 className="text-5xl font-black uppercase tracking-tight">
+            {isArabic ? "البيانات المهنية" : "Career Data"}
+          </h3>
         </div>
 
         {/* Vertical Timeline Structure */}
@@ -161,14 +188,16 @@ export default function Experience() {
 
         {/* Footer CTA */}
         <div className="mt-16 text-center border-t border-white/20 pt-8">
-          <p className="font-mono text-xs text-gray-500 mb-4">END OF LOG_FILE_001</p>
+          <p className="font-mono text-xs text-gray-500 mb-4">
+            {isArabic ? "نهاية ملف السجل 001" : "END OF LOG_FILE_001"}
+          </p>
           <motion.a
             href="#contact"
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
             className="px-8 py-4 border-2 border-cyan-400 text-white font-bold uppercase tracking-wider inline-block transition-colors hover:bg-cyan-400 hover:text-black"
           >
-            Download Resume [PDF]
+            {isArabic ? "تحميل السيرة الذاتية [PDF]" : "Download Resume [PDF]"}
           </motion.a>
         </div>
 

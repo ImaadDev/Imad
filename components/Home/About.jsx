@@ -3,6 +3,7 @@
 import { motion, AnimatePresence } from 'framer-motion';
 import { useInView } from 'react-intersection-observer';
 import { useEffect, useState } from 'react';
+import { usePathname } from 'next/navigation';
 
 // Animation Variants
 const slideIn = {
@@ -35,34 +36,44 @@ function AnimatedSection({ children, delay = 0 }) {
 
 export default function About() {
   const [currentSection, setCurrentSection] = useState(0);
+  const pathname = usePathname();
+  const isArabic = pathname?.startsWith("/ar");
 
   const sections = [
     {
       id: "01",
-      title: "IDENTITY",
-      subtitle: "Full Stack Developer",
-      content: "Specializing in MERN & Next.js, I build scalable web applications, SaaS dashboards, and business workflow systems. Focused on delivering clean, maintainable code and real business value.",
+      title: isArabic ? "الهوية" : "IDENTITY",
+      subtitle: isArabic ? "مطور واجهات متكامل" : "Full Stack Developer",
+      content: isArabic
+        ? "متخصص في MERN & Next.js، أقوم ببناء تطبيقات ويب قابلة للتوسع، لوحات تحكم SaaS، وأنظمة سير العمل التجارية. أركز على تقديم كود نظيف وقابل للصيانة وقيمة تجارية حقيقية."
+        : "Specializing in MERN & Next.js, I build scalable web applications, SaaS dashboards, and business workflow systems. Focused on delivering clean, maintainable code and real business value.",
       color: "text-cyan-400"
     },
     {
       id: "02",
-      title: "STACK",
-      subtitle: "The Arsenal",
-      content: "React.js, Next.js, Node.js, Express, MongoDB, PostgreSQL. I leverage modern tools like Docker and AWS to engineer performant ecosystems that scale.",
+      title: isArabic ? "التقنيات" : "STACK",
+      subtitle: isArabic ? "الترسانة التقنية" : "The Arsenal",
+      content: isArabic
+        ? "React.js, Next.js, Node.js, Express, MongoDB, PostgreSQL. أستفيد من الأدوات الحديثة مثل Docker و AWS لهندسة أنظمة بيئية عالية الأداء وقابلة للتوسع."
+        : "React.js, Next.js, Node.js, Express, MongoDB, PostgreSQL. I leverage modern tools like Docker and AWS to engineer performant ecosystems that scale.",
       color: "text-purple-400"
     },
     {
       id: "03",
-      title: "PHILOSOPHY",
-      subtitle: "Performance & Security",
-      content: "Skilled in API development, authentication, and optimization. I believe in robust architecture where security (JWT, RBAC) and speed go hand in hand.",
+      title: isArabic ? "الفلسفة" : "PHILOSOPHY",
+      subtitle: isArabic ? "الأداء والأمان" : "Performance & Security",
+      content: isArabic
+        ? "ماهر في تطوير واجهات برمجة التطبيقات (API)، المصادقة، والتحسين. أؤمن بالبنية القوية حيث يسير الأمان (JWT, RBAC) والسرعة جنباً إلى جنب."
+        : "Skilled in API development, authentication, and optimization. I believe in robust architecture where security (JWT, RBAC) and speed go hand in hand.",
       color: "text-emerald-400"
     },
     {
       id: "04",
-      title: "CONTACT",
-      subtitle: "Initiate Protocol",
-      content: "Have a complex problem? I build elegant solutions. Let's align our grids and build the future of the web.",
+      title: isArabic ? "تواصل" : "CONTACT",
+      subtitle: isArabic ? "بدء البروتوكول" : "Initiate Protocol",
+      content: isArabic
+        ? "هل لديك مشكلة معقدة؟ أنا أبني حلولاً أنيقة. دعنا نوحد جهودنا ونبني مستقبل الويب."
+        : "Have a complex problem? I build elegant solutions. Let's align our grids and build the future of the web.",
       color: "text-orange-400"
     }
   ];
@@ -97,7 +108,7 @@ export default function About() {
             }}
           >
             <h2 className="text-5xl sm:text-6xl md:text-7xl lg:text-9xl font-black tracking-tighter leading-none">
-              ABOUT
+              {isArabic ? "عني" : "ABOUT"}
             </h2>
             <motion.h2
               className="text-5xl sm:text-6xl md:text-7xl lg:text-9xl font-black tracking-tighter leading-none text-transparent bg-clip-text bg-gradient-to-r from-white to-gray-600"
@@ -109,7 +120,7 @@ export default function About() {
                 delay: 0.6
               }}
             >
-              MYSELF.
+              {isArabic ? "نفسي." : "MYSELF."}
             </motion.h2>
           </motion.div>
 
@@ -123,8 +134,8 @@ export default function About() {
             }}
             className="text-right mt-4 md:mt-0"
           >
-            <p className="font-mono text-xs sm:text-sm text-gray-400">SYSTEM STATUS: ONLINE</p>
-            <p className="font-mono text-xs sm:text-sm text-gray-400">LOCATION: WORLDWIDE</p>
+            <p className="font-mono text-xs sm:text-sm text-gray-400">{isArabic ? "حالة النظام: متصل" : "SYSTEM STATUS: ONLINE"}</p>
+            <p className="font-mono text-xs sm:text-sm text-gray-400">{isArabic ? "الموقع: عالمي" : "LOCATION: WORLDWIDE"}</p>
           </motion.div>
         </div>
 
@@ -182,10 +193,10 @@ export default function About() {
             {/* Stats Grid */}
             <div className="grid grid-cols-2">
               {[
-                { label: "PROJECTS", value: "10+" },
-                { label: "EXP YRS", value: "05+" },
-                { label: "CLIENTS", value: "1K+" },
-                { label: "COMMITS", value: "2k+" }
+                { label: isArabic ? "مشاريع" : "PROJECTS", value: "10+" },
+                { label: isArabic ? "سنوات خبرة" : "EXP YRS", value: "05+" },
+                { label: isArabic ? "عملاء" : "CLIENTS", value: "1K+" },
+                { label: isArabic ? "التزامات" : "COMMITS", value: "2k+" }
               ].map((stat, index) => (
                 <motion.div
                   key={index}
@@ -207,7 +218,9 @@ export default function About() {
 
             {/* Technical Proficiency */}
             <div className="p-4 sm:p-6 md:p-8 flex-1 flex flex-col justify-center space-y-4 sm:space-y-6">
-              <h4 className="font-mono text-xs sm:text-sm text-gray-500 uppercase mb-3 sm:mb-4 border-b border-white/10 pb-2">Core Competencies</h4>
+              <h4 className="font-mono text-xs sm:text-sm text-gray-500 uppercase mb-3 sm:mb-4 border-b border-white/10 pb-2">
+                {isArabic ? "المهارات الأساسية" : "Core Competencies"}
+              </h4>
               {[
                 { skill: "React / Next.js", level: 95 },
                 { skill: "Node.js / Backend", level: 90 },
@@ -254,8 +267,12 @@ export default function About() {
             }}
             viewport={{ once: true }}
           >
-            <h3 className="text-xl sm:text-2xl font-bold uppercase tracking-tight">Start a Collaboration</h3>
-            <p className="text-gray-400 mt-2 text-sm sm:text-base">Available for freelance and contract work.</p>
+            <h3 className="text-xl sm:text-2xl font-bold uppercase tracking-tight">
+              {isArabic ? "ابدأ تعاوناً" : "Start a Collaboration"}
+            </h3>
+            <p className="text-gray-400 mt-2 text-sm sm:text-base">
+              {isArabic ? "متاح للعمل الحر والتعاقد." : "Available for freelance and contract work."}
+            </p>
           </motion.div>
           <motion.div
             className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-start md:justify-end"
@@ -273,14 +290,14 @@ export default function About() {
               whileTap={{ scale: 0.98 }}
               className="px-6 sm:px-8 py-3 sm:py-4 bg-transparent border border-white text-white font-bold uppercase tracking-wider transition-colors text-sm sm:text-base"
             >
-              Contact Me
+              {isArabic ? "تواصل معي" : "Contact Me"}
             </motion.button>
             <motion.button
               whileHover={{ scale: 1.02, backgroundColor: "#222" }}
               whileTap={{ scale: 0.98 }}
               className="px-6 sm:px-8 py-3 sm:py-4 bg-white text-black font-bold uppercase tracking-wider border border-white text-sm sm:text-base"
             >
-              View Works
+              {isArabic ? "شاهد أعمالي" : "View Works"}
             </motion.button>
           </motion.div>
         </motion.div>

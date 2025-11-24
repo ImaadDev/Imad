@@ -2,11 +2,14 @@
 
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { usePathname } from 'next/navigation';
 
 export default function Contact() {
     const [formState, setFormState] = useState({ name: '', email: '', message: '' });
     const [isFocused, setIsFocused] = useState(null);
     const [isCopied, setIsCopied] = useState(false);
+    const pathname = usePathname();
+    const isArabic = pathname?.startsWith("/ar");
 
     const handleCopy = () => {
         navigator.clipboard.writeText('kimad1728@gmail.com');
@@ -35,7 +38,7 @@ export default function Contact() {
                 <div className="mb-16 border-b border-white/20 pb-8">
 
                     <h2 className="text-6xl md:text-8xl font-black uppercase tracking-tighter text-white">
-                        Start a <br /> Project
+                        {isArabic ? "ابدأ" : "Start a"} <br /> {isArabic ? "مشروعاً" : "Project"}
                     </h2>
                 </div>
 
@@ -46,7 +49,9 @@ export default function Contact() {
 
                         {/* The Email Interaction */}
                         <div className="mb-12">
-                            <p className="font-mono text-xs text-gray-500 mb-4">DIRECT_FEED_CHANNEL</p>
+                            <p className="font-mono text-xs text-gray-500 mb-4">
+                                {isArabic ? "قناة الاتصال المباشر" : "DIRECT_FEED_CHANNEL"}
+                            </p>
                             <div className="relative group inline-block">
                                 <h3
                                     onClick={handleCopy}
@@ -64,7 +69,7 @@ export default function Contact() {
                                             exit={{ opacity: 0, y: 10 }}
                                             className="absolute -right-4 top-0 translate-x-full bg-cyan-400 text-black text-xs font-bold px-2 py-1 uppercase"
                                         >
-                                            Copied!
+                                            {isArabic ? "تم النسخ!" : "Copied!"}
                                         </motion.div>
                                     )}
                                 </AnimatePresence>
@@ -76,7 +81,9 @@ export default function Contact() {
 
                         {/* Social Network Grid */}
                         <div>
-                            <p className="font-mono text-xs text-gray-500 mb-6">ESTABLISH_CONNECTION</p>
+                            <p className="font-mono text-xs text-gray-500 mb-6">
+                                {isArabic ? "إنشاء اتصال" : "ESTABLISH_CONNECTION"}
+                            </p>
                             <div className="grid grid-cols-2 gap-4">
                                 {socialLinks.map((link) => (
                                     <a
@@ -105,7 +112,7 @@ export default function Contact() {
                             {/* Name Input */}
                             <div className="relative">
                                 <label className={`absolute left-0 -top-6 font-mono text-xs transition-colors duration-300 ${isFocused === 'name' ? 'text-cyan-400' : 'text-gray-500'}`}>
-                                    01 // ENTER NAME
+                                    01 // {isArabic ? "أدخل الاسم" : "ENTER NAME"}
                                 </label>
                                 <input
                                     type="text"
@@ -113,7 +120,7 @@ export default function Contact() {
                                     onFocus={() => setIsFocused('name')}
                                     onBlur={() => setIsFocused(null)}
                                     className="w-full bg-transparent border-b border-white/20 py-4 text-xl md:text-2xl font-bold text-white focus:outline-none focus:border-cyan-400 transition-colors duration-300 placeholder-transparent"
-                                    placeholder="John Doe"
+                                    placeholder={isArabic ? "الاسم" : "John Doe"}
                                     autoComplete="off"
                                 />
                             </div>
@@ -121,7 +128,7 @@ export default function Contact() {
                             {/* Email Input */}
                             <div className="relative">
                                 <label className={`absolute left-0 -top-6 font-mono text-xs transition-colors duration-300 ${isFocused === 'email' ? 'text-cyan-400' : 'text-gray-500'}`}>
-                                    02 // ENTER EMAIL
+                                    02 // {isArabic ? "أدخل البريد الإلكتروني" : "ENTER EMAIL"}
                                 </label>
                                 <input
                                     type="email"
@@ -129,7 +136,7 @@ export default function Contact() {
                                     onFocus={() => setIsFocused('email')}
                                     onBlur={() => setIsFocused(null)}
                                     className="w-full bg-transparent border-b border-white/20 py-4 text-xl md:text-2xl font-bold text-white focus:outline-none focus:border-cyan-400 transition-colors duration-300 placeholder-transparent"
-                                    placeholder="john@example.com"
+                                    placeholder={isArabic ? "البريد الإلكتروني" : "john@example.com"}
                                     autoComplete="off"
                                 />
                             </div>
@@ -137,7 +144,7 @@ export default function Contact() {
                             {/* Message Input */}
                             <div className="relative">
                                 <label className={`absolute left-0 -top-6 font-mono text-xs transition-colors duration-300 ${isFocused === 'message' ? 'text-cyan-400' : 'text-gray-500'}`}>
-                                    03 // PROJECT DETAILS
+                                    03 // {isArabic ? "تفاصيل المشروع" : "PROJECT DETAILS"}
                                 </label>
                                 <textarea
                                     name="message"
@@ -145,7 +152,7 @@ export default function Contact() {
                                     onFocus={() => setIsFocused('message')}
                                     onBlur={() => setIsFocused(null)}
                                     className="w-full bg-transparent border-b border-white/20 py-4 text-xl md:text-2xl font-medium text-white focus:outline-none focus:border-cyan-400 transition-colors duration-300 placeholder-transparent resize-none"
-                                    placeholder="Tell me about your project..."
+                                    placeholder={isArabic ? "أخبرني عن مشروعك..." : "Tell me about your project..."}
                                 />
                             </div>
 
@@ -155,7 +162,7 @@ export default function Contact() {
                                 className="w-full bg-white text-black font-black uppercase tracking-widest py-6 border border-white hover:bg-transparent hover:text-white hover:border-cyan-400 transition-all duration-300 group relative overflow-hidden"
                             >
                                 <span className="relative z-10 flex items-center justify-center gap-2">
-                                    Transmit Message
+                                    {isArabic ? "إرسال الرسالة" : "Transmit Message"}
                                     <span className="w-2 h-2 bg-black group-hover:bg-cyan-400 transition-colors"></span>
                                 </span>
                             </button>

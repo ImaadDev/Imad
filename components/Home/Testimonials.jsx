@@ -2,49 +2,58 @@
 
 import { useState, useEffect, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-
-const testimonials = [
-    {
-        id: "01",
-        client: "Sarah Jenkins",
-        role: "CTO, FINTECH FLOW",
-        image: "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?q=80&w=1000&auto=format&fit=crop",
-        quote: "Imad didn't just build a website; he engineered a scalable system. The attention to modular architecture changed how our team approaches development.",
-        location: "LONDON, UK",
-        accessLevel: "LEVEL_5"
-    },
-    {
-        id: "02",
-        client: "Marcus Thorne",
-        role: "Creative Director, ORBITAL",
-        image: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?q=80&w=1000&auto=format&fit=crop",
-        quote: "A rare combination of creative vision and technical precision. He translated our complex 3D concepts into a seamless browser experience.",
-        location: "BERLIN, DE",
-        accessLevel: "ADMIN"
-    },
-    {
-        id: "03",
-        client: "Elena Rodriguez",
-        role: "Founder, AETHER LABS",
-        image: "https://images.unsplash.com/photo-1580489944761-15a19d654956?q=80&w=1000&auto=format&fit=crop",
-        quote: "We needed a site that looked like it was from 2030. The animations are buttery smooth, and conversion increased by 40% post-launch.",
-        location: "TOKYO, JP",
-        accessLevel: "VIP_USER"
-    }
-];
+import { usePathname } from 'next/navigation';
 
 export default function Testimonials() {
     const [currentIndex, setCurrentIndex] = useState(0);
     const [isPaused, setIsPaused] = useState(false);
+    const pathname = usePathname();
+    const isArabic = pathname?.startsWith("/ar");
+
+    const testimonials = [
+        {
+            id: "01",
+            client: isArabic ? "سارة جنكينز" : "Sarah Jenkins",
+            role: isArabic ? "المدير التقني، فينتك فلو" : "CTO, FINTECH FLOW",
+            image: "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?q=80&w=1000&auto=format&fit=crop",
+            quote: isArabic
+                ? "لم يقم عماد ببناء موقع ويب فحسب؛ بل صمم نظاماً قابلاً للتوسع. الاهتمام بالبنية المعيارية غيّر طريقة تعامل فريقنا مع التطوير."
+                : "Imad didn't just build a website; he engineered a scalable system. The attention to modular architecture changed how our team approaches development.",
+            location: isArabic ? "لندن، المملكة المتحدة" : "LONDON, UK",
+            accessLevel: "LEVEL_5"
+        },
+        {
+            id: "02",
+            client: isArabic ? "ماركوس ثورن" : "Marcus Thorne",
+            role: isArabic ? "المدير الإبداعي، أوربيتال" : "Creative Director, ORBITAL",
+            image: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?q=80&w=1000&auto=format&fit=crop",
+            quote: isArabic
+                ? "مزيج نادر من الرؤية الإبداعية والدقة التقنية. لقد ترجم مفاهيمنا ثلاثية الأبعاد المعقدة إلى تجربة متصفح سلسة."
+                : "A rare combination of creative vision and technical precision. He translated our complex 3D concepts into a seamless browser experience.",
+            location: isArabic ? "برلين، ألمانيا" : "BERLIN, DE",
+            accessLevel: "ADMIN"
+        },
+        {
+            id: "03",
+            client: isArabic ? "إيلينا رودريغيز" : "Elena Rodriguez",
+            role: isArabic ? "المؤسس، مختبرات إيثر" : "Founder, AETHER LABS",
+            image: "https://images.unsplash.com/photo-1580489944761-15a19d654956?q=80&w=1000&auto=format&fit=crop",
+            quote: isArabic
+                ? "كنا بحاجة إلى موقع يبدو وكأنه من عام 2030. الرسوم المتحركة سلسة للغاية، وزاد معدل التحويل بنسبة 40% بعد الإطلاق."
+                : "We needed a site that looked like it was from 2030. The animations are buttery smooth, and conversion increased by 40% post-launch.",
+            location: isArabic ? "طوكيو، اليابان" : "TOKYO, JP",
+            accessLevel: "VIP_USER"
+        }
+    ];
 
     // Navigation Logic
     const handleNext = useCallback(() => {
         setCurrentIndex((prev) => (prev + 1) % testimonials.length);
-    }, []);
+    }, [testimonials.length]);
 
     const handlePrev = useCallback(() => {
         setCurrentIndex((prev) => (prev - 1 + testimonials.length) % testimonials.length);
-    }, []);
+    }, [testimonials.length]);
 
     // Auto-Play Effect
     useEffect(() => {
@@ -63,7 +72,7 @@ export default function Testimonials() {
 
             {/* Background Decor */}
             <div className="absolute top-20 right-0 text-[20vw] font-black text-white/5 leading-none select-none pointer-events-none truncate">
-                FEEDBACK
+                {isArabic ? "آراء العملاء" : "FEEDBACK"}
             </div>
 
             <div className="max-w-7xl mx-auto w-full relative z-10">
@@ -73,9 +82,13 @@ export default function Testimonials() {
                     <div>
                         <div className="flex items-center gap-2 mb-2">
                             <div className="w-2 h-2 bg-cyan-400 animate-pulse"></div>
-                            <span className="font-mono text-xs text-cyan-400 tracking-widest">ENCRYPTED_TRANSMISSION</span>
+                            <span className="font-mono text-xs text-cyan-400 tracking-widest">
+                                {isArabic ? "نقل مشفر" : "ENCRYPTED_TRANSMISSION"}
+                            </span>
                         </div>
-                        <h2 className="text-4xl md:text-5xl font-black uppercase tracking-tight">Client Dossiers</h2>
+                        <h2 className="text-4xl md:text-5xl font-black uppercase tracking-tight">
+                            {isArabic ? "ملفات العملاء" : "Client Dossiers"}
+                        </h2>
                     </div>
 
                     {/* Controls - Top Right for Desktop */}
@@ -84,13 +97,13 @@ export default function Testimonials() {
                             onClick={handlePrev}
                             className="px-6 py-4 hover:bg-white hover:text-black transition-colors border-r border-white/20 font-bold text-xs tracking-widest"
                         >
-                            PREV_LOG
+                            {isArabic ? "السجل السابق" : "PREV_LOG"}
                         </button>
                         <button
                             onClick={handleNext}
                             className="px-6 py-4 hover:bg-white hover:text-black transition-colors font-bold text-xs tracking-widest"
                         >
-                            NEXT_LOG
+                            {isArabic ? "السجل التالي" : "NEXT_LOG"}
                         </button>
                     </div>
                 </div>
@@ -193,7 +206,7 @@ export default function Testimonials() {
                                     </div>
 
                                     <div className="text-right hidden sm:block">
-                                        <p className="font-mono text-[10px] text-gray-500 uppercase mb-1">Location</p>
+                                        <p className="font-mono text-[10px] text-gray-500 uppercase mb-1">{isArabic ? "الموقع" : "Location"}</p>
                                         <p className="font-bold text-white uppercase tracking-wider">{testimonials[currentIndex].location}</p>
                                     </div>
                                 </div>
@@ -206,13 +219,13 @@ export default function Testimonials() {
                                 onClick={handlePrev}
                                 className="flex-1 py-4 border border-white/20 text-xs font-bold uppercase hover:bg-white hover:text-black transition-colors"
                             >
-                                Prev
+                                {isArabic ? "السابق" : "Prev"}
                             </button>
                             <button
                                 onClick={handleNext}
                                 className="flex-1 py-4 border border-white/20 text-xs font-bold uppercase hover:bg-white hover:text-black transition-colors"
                             >
-                                Next
+                                {isArabic ? "التالي" : "Next"}
                             </button>
                         </div>
 

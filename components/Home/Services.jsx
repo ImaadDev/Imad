@@ -3,38 +3,54 @@
 import { useState, useRef } from 'react';
 import { motion, AnimatePresence, useScroll, useTransform } from 'framer-motion';
 import { Layers, Zap, Code, Terminal, Shield, Cpu, Globe, Database } from 'lucide-react';
-
-const servicesData = [
-    {
-        id: "01",
-        title: "FULL-STACK ARCHITECTURE",
-        category: "System Design",
-        icon: Layers,
-        description: "End-to-end development of scalable web applications using MERN & Next.js. From database modeling to frontend implementation.",
-        features: ["API Design (REST/GraphQL)", "Database Schema (SQL/NoSQL)", "Microservices Architecture"],
-        visual: Code
-    },
-    {
-        id: "02",
-        title: "SAAS & DASHBOARDS",
-        category: "Product Development",
-        icon: Database,
-        description: "Building sophisticated multi-tenant SaaS platforms with advanced analytics, RBAC, and real-time data visualization.",
-        features: ["Role-Based Access Control", "Real-Time Data Feeds", "Custom Reporting Modules"],
-        visual: Globe
-    },
-    {
-        id: "03",
-        title: "PERFORMANCE OPTIMIZATION",
-        category: "DevOps & Speed",
-        icon: Zap,
-        description: "Enhancing application speed, reducing load times, and establishing robust CI/CD pipelines for automated releases.",
-        features: ["CI/CD Pipelines", "AWS Infrastructure", "Query Optimization"],
-        visual: Cpu
-    },
-];
+import { usePathname } from 'next/navigation';
 
 export default function Services() {
+    const pathname = usePathname();
+    const isArabic = pathname?.startsWith("/ar");
+
+    const servicesData = [
+        {
+            id: "01",
+            title: isArabic ? "هندسة متكاملة" : "FULL-STACK ARCHITECTURE",
+            category: isArabic ? "تصميم النظام" : "System Design",
+            icon: Layers,
+            description: isArabic
+                ? "تطوير شامل لتطبيقات الويب القابلة للتوسع باستخدام MERN & Next.js. من نمذجة قاعدة البيانات إلى تنفيذ الواجهة الأمامية."
+                : "End-to-end development of scalable web applications using MERN & Next.js. From database modeling to frontend implementation.",
+            features: isArabic
+                ? ["تصميم API (REST/GraphQL)", "مخطط قاعدة البيانات (SQL/NoSQL)", "هندسة الخدمات المصغرة"]
+                : ["API Design (REST/GraphQL)", "Database Schema (SQL/NoSQL)", "Microservices Architecture"],
+            visual: Code
+        },
+        {
+            id: "02",
+            title: isArabic ? "SaaS ولوحات تحكم" : "SAAS & DASHBOARDS",
+            category: isArabic ? "تطوير المنتجات" : "Product Development",
+            icon: Database,
+            description: isArabic
+                ? "بناء منصات SaaS متطورة متعددة المستأجرين مع تحليلات متقدمة، تحكم في الوصول (RBAC)، وتصور بيانات في الوقت الفعلي."
+                : "Building sophisticated multi-tenant SaaS platforms with advanced analytics, RBAC, and real-time data visualization.",
+            features: isArabic
+                ? ["تحكم في الوصول حسب الدور", "تغذية بيانات في الوقت الفعلي", "وحدات تقارير مخصصة"]
+                : ["Role-Based Access Control", "Real-Time Data Feeds", "Custom Reporting Modules"],
+            visual: Globe
+        },
+        {
+            id: "03",
+            title: isArabic ? "تحسين الأداء" : "PERFORMANCE OPTIMIZATION",
+            category: isArabic ? "DevOps والسرعة" : "DevOps & Speed",
+            icon: Zap,
+            description: isArabic
+                ? "تحسين سرعة التطبيق، تقليل أوقات التحميل، وإنشاء خطوط أنابيب CI/CD قوية للإصدارات الآلية."
+                : "Enhancing application speed, reducing load times, and establishing robust CI/CD pipelines for automated releases.",
+            features: isArabic
+                ? ["خطوط أنابيب CI/CD", "بنية تحتية AWS", "تحسين الاستعلامات"]
+                : ["CI/CD Pipelines", "AWS Infrastructure", "Query Optimization"],
+            visual: Cpu
+        },
+    ];
+
     const [activeService, setActiveService] = useState(servicesData[0]);
     const containerRef = useRef(null);
 
@@ -58,7 +74,7 @@ export default function Services() {
                     style={{ scale, opacity }}
                     className="text-[15vw] font-black uppercase tracking-tighter text-white mix-blend-difference leading-none"
                 >
-                    SERVICES
+                    {isArabic ? "خدمات" : "SERVICES"}
                 </motion.div>
             </div>
 
@@ -78,8 +94,12 @@ export default function Services() {
                     {/* LEFT COLUMN: Service Index */}
                     <div className="flex flex-col justify-center">
                         <div className="mb-12 border-b border-white/20 pb-4">
-                            <h2 className="text-sm font-mono text-gray-400 tracking-widest uppercase mb-2">// CAPABILITIES</h2>
-                            <h3 className="text-4xl font-bold uppercase tracking-tight">Service Protocols</h3>
+                            <h2 className="text-sm font-mono text-gray-400 tracking-widest uppercase mb-2">
+                                // {isArabic ? "القدرات" : "CAPABILITIES"}
+                            </h2>
+                            <h3 className="text-4xl font-bold uppercase tracking-tight">
+                                {isArabic ? "بروتوكولات الخدمة" : "Service Protocols"}
+                            </h3>
                         </div>
 
                         <div className="flex flex-col">
@@ -176,12 +196,12 @@ export default function Services() {
                         {/* Metadata Footer */}
                         <div className="mt-6 flex justify-between items-end font-mono text-xs uppercase tracking-wider">
                             <div>
-                                <p className="text-gray-500">Service Category</p>
+                                <p className="text-gray-500">{isArabic ? "فئة الخدمة" : "Service Category"}</p>
                                 <p className="text-white text-lg">{activeService.category}</p>
                             </div>
                             <div className="text-right">
-                                <p className="text-gray-500">Status</p>
-                                <p className="text-cyan-400 animate-pulse">AVAILABLE</p>
+                                <p className="text-gray-500">{isArabic ? "الحالة" : "Status"}</p>
+                                <p className="text-cyan-400 animate-pulse">{isArabic ? "متاح" : "AVAILABLE"}</p>
                             </div>
                         </div>
 
