@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { usePathname } from 'next/navigation';
+import Image from 'next/image';
 
 export default function Projects() {
   const pathname = usePathname();
@@ -203,17 +204,25 @@ export default function Projects() {
 
               <div className="relative w-full h-full overflow-hidden bg-black">
                 <AnimatePresence mode='popLayout'>
-                  <motion.img
+                  <motion.div
                     key={activeProject._id}
-                    src={activeProject.image?.asset?.url || activeProject.image}
-                    alt={activeProject.title}
-                    className="absolute inset-0 w-full h-full object-cover"
+                    className="absolute inset-0"
                     initial={{ opacity: 0, scale: 1.05 }}
                     animate={{ opacity: 1, scale: 1 }}
                     exit={{ opacity: 0 }}
                     transition={{ duration: 0.4 }}
-                    loading="lazy"
-                  />
+                  >
+                    <Image
+                      src={activeProject.image?.asset?.url || activeProject.image}
+                      alt={activeProject.title}
+                      fill
+                      className="object-cover"
+                      sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                      priority={activeProject._id === projects[0]?._id}
+                      placeholder="blur"
+                      blurDataURL="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAAIAAoDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAv/xAAhEAACAQMDBQAAAAAAAAAAAAABAgMABAUGIWGRkqGx0f/EABUBAQEAAAAAAAAAAAAAAAAAAAMF/8QAGhEAAgIDAAAAAAAAAAAAAAAAAAECEgMRkf/aAAwDAQACEQMRAD8AltJagyeH0AthI5xdrLcNM91BF5pX2HaH9bcfaSXWGaRmknyJckliyjqTzSlT54b6bk+h0R+IRjWjBqO6O2mhP//Z"
+                    />
+                  </motion.div>
                 </AnimatePresence>
 
                 {/* Scanline Overlay (Lightweight) */}
