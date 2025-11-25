@@ -6,8 +6,11 @@ import { usePathname } from 'next/navigation';
 
 export default function Contact() {
     const [formState, setFormState] = useState({ name: '', email: '', message: '' });
-    const [isFocused, setIsFocused] = useState(null);
+    const [focusedField, setFocusedField] = useState(null);
     const [isCopied, setIsCopied] = useState(false);
+    const [isLoading, setIsLoading] = useState(false);
+    const [successMessage, setSuccessMessage] = useState('');
+    const [errorMessage, setErrorMessage] = useState('');
     const pathname = usePathname();
     const isArabic = pathname?.startsWith("/ar");
 
@@ -17,164 +20,221 @@ export default function Contact() {
         setTimeout(() => setIsCopied(false), 2000);
     };
 
+   // REMOVE : React.FormEvent from the parameter
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        setIsLoading(true);
+        setSuccessMessage('');
+        setErrorMessage('');
+    
+        try {
+            const response = await fetch('/api/send', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(formState),
+            });
+    
+            if (response.ok) {
+                setSuccessMessage(isArabic ? 'تم استلام البيانات' : 'DATA TRANSMITTED SUCCESSFULLY');
+                setFormState({ name: '', email: '', message: '' });
+            } else {
+                setErrorMessage(isArabic ? 'خطأ في الإرسال' : 'TRANSMISSION ERROR');
+            }
+        } catch (error) {
+            setErrorMessage(isArabic ? 'خطأ في النظام' : 'SYSTEM ERROR');
+        } finally {
+            setIsLoading(false);
+        }
+    };
+
     const socialLinks = [
-        { name: "GITHUB", url: "#", id: "GH-01" },
-        { name: "LINKEDIN", url: "#", id: "LI-02" },
-        { name: "TWITTER", url: "#", id: "X-03" },
-        { name: "INSTAGRAM", url: "#", id: "IG-04" }
+        { name: "GITHUB", url: "#", id: "SYS_01" },
+        { name: "LINKEDIN", url: "#", id: "NET_02" },
+        { name: "TWITTER", url: "#", id: "COM_03" },
+        { name: "INSTAGRAM", url: "#", id: "IMG_04" }
     ];
 
     return (
-        <section className="min-h-screen bg-[#0a0a0a] text-white pt-24 pb-12 px-4 relative flex flex-col justify-between" id="contact">
-
-            {/* Background Grid */}
-            <div className="absolute inset-0 pointer-events-none opacity-20"
-                style={{ backgroundImage: 'linear-gradient(#333 1px, transparent 1px), linear-gradient(90deg, #333 1px, transparent 1px)', backgroundSize: '40px 40px' }}>
+        <section className="min-h-screen bg-[#050505] text-white pt-20 pb-20 relative flex flex-col" id="contact">
+            
+            {/* 1. Section Header / Status Bar */}
+            <div className="border-y border-zinc-800 bg-[#050505] relative z-10">
+                <div className="max-w-[1800px] mx-auto px-4 md:px-8 py-6 flex justify-between items-center">
+                    <div className="flex items-center gap-4">
+                        <div className="w-3 h-3 bg-cyan-500 animate-pulse"></div>
+                        <span className="font-mono text-xs tracking-widest text-zinc-500">
+                            {isArabic ? "النظام جاهز" : "SYSTEM_ONLINE // READY_TO_CONNECT"}
+                        </span>
+                    </div>
+                    <span className="font-mono text-xs text-zinc-600 hidden md:block">
+                        SECURE_CHANNEL_V.2.0
+                    </span>
+                </div>
             </div>
 
-            <div className="max-w-7xl mx-auto w-full relative z-10 flex-1 flex flex-col justify-center">
+            <div className="max-w-[1800px] mx-auto w-full grid grid-cols-1 lg:grid-cols-12 border-b border-zinc-800 min-h-[80vh]">
+                
+                {/* 2. LEFT COLUMN: Typography & Contact Info (5 cols) */}
+                <div className="lg:col-span-5 border-r border-zinc-800 p-8 md:p-16 flex flex-col justify-between relative overflow-hidden group">
+                    
+                    {/* Background Interaction */}
+                    <div className="absolute inset-0 bg-zinc-900/20 translate-y-full group-hover:translate-y-0 transition-transform duration-700 ease-in-out z-0"></div>
 
-                {/* Header */}
-                <div className="mb-16 border-b border-white/20 pb-8">
-
-                    <h2 className="text-6xl md:text-8xl font-black uppercase tracking-tighter text-white">
-                        {isArabic ? "ابدأ" : "Start a"} <br /> {isArabic ? "مشروعاً" : "Project"}
-                    </h2>
-                </div>
-
-                <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-24">
-
-                    {/* LEFT: Contact Info & Socials */}
-                    <div className="flex flex-col justify-between">
-
-                        {/* The Email Interaction */}
-                        <div className="mb-12">
-                            <p className="font-mono text-xs text-gray-500 mb-4">
-                                {isArabic ? "قناة الاتصال المباشر" : "DIRECT_FEED_CHANNEL"}
-                            </p>
-                            <div className="relative group inline-block">
-                                <h3
-                                    onClick={handleCopy}
-                                    className="text-3xl md:text-5xl font-bold cursor-pointer hover:text-cyan-400 transition-colors duration-300"
-                                >
-                                    kimad1728@gmail.com
-                                </h3>
-
-                                {/* Copy Feedback Tooltip */}
-                                <AnimatePresence>
-                                    {isCopied && (
-                                        <motion.div
-                                            initial={{ opacity: 0, y: 10 }}
-                                            animate={{ opacity: 1, y: 0 }}
-                                            exit={{ opacity: 0, y: 10 }}
-                                            className="absolute -right-4 top-0 translate-x-full bg-cyan-400 text-black text-xs font-bold px-2 py-1 uppercase"
-                                        >
-                                            {isArabic ? "تم النسخ!" : "Copied!"}
-                                        </motion.div>
-                                    )}
-                                </AnimatePresence>
-
-                                {/* Underline Hover Effect */}
-                                <div className="w-full h-0.5 bg-white/20 mt-2 group-hover:bg-cyan-400 transition-colors duration-300"></div>
-                            </div>
-                        </div>
-
-                        {/* Social Network Grid */}
-                        <div>
-                            <p className="font-mono text-xs text-gray-500 mb-6">
-                                {isArabic ? "إنشاء اتصال" : "ESTABLISH_CONNECTION"}
-                            </p>
-                            <div className="grid grid-cols-2 gap-4">
-                                {socialLinks.map((link) => (
-                                    <a
-                                        key={link.name}
-                                        href={link.url}
-                                        className="border border-white/20 p-4 hover:bg-white hover:text-black transition-all duration-300 group relative overflow-hidden"
-                                    >
-                                        <div className="flex justify-between items-start relative z-10">
-                                            <span className="font-bold text-sm tracking-wider">{link.name}</span>
-                                            <svg className="w-3 h-3 transform group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="square" strokeLinejoin="miter" strokeWidth="2" d="M7 17L17 7M17 7H7M17 7V17"></path></svg>
-                                        </div>
-                                        <span className="font-mono text-[10px] text-gray-500 group-hover:text-black/60 mt-2 block relative z-10">{link.id}</span>
-
-                                        {/* Hover Fill Effect */}
-                                        <div className="absolute inset-0 bg-white transform scale-x-0 origin-left group-hover:scale-x-100 transition-transform duration-300 ease-out -z-0"></div>
-                                    </a>
-                                ))}
-                            </div>
-                        </div>
+                    <div className="relative z-10">
+                        <h2 className="text-6xl md:text-8xl font-black tracking-tighter leading-[0.9] mb-8">
+                            {isArabic ? "لنبدأ" : "LET'S"}<br />
+                            <span className="text-transparent stroke-text-white hover:text-cyan-400 transition-colors duration-500">
+                                {isArabic ? "العمل" : "BUILD"}
+                            </span>
+                        </h2>
+                        <p className="font-mono text-sm text-zinc-400 max-w-xs leading-relaxed">
+                            {isArabic 
+                                ? "هل لديك فكرة معقدة؟ أنا متخصص في تحويل المفاهيم المجردة إلى كود عالي الأداء." 
+                                : "Have a complex idea? I specialize in turning abstract concepts into high-performance code."}
+                        </p>
                     </div>
 
-                    {/* RIGHT: The "Terminal" Form */}
-                    <div className="bg-white/5 border border-white/10 p-8 md:p-12 backdrop-blur-sm">
-                        <form className="space-y-12">
+                    <div className="relative z-10 mt-12 space-y-12">
+                        {/* Email Block */}
+                        <div>
+                            <div className="font-mono text-[10px] text-cyan-500 mb-2 tracking-widest">
+                                {isArabic ? "البريد الإلكتروني" : "TARGET_ADDRESS"}
+                            </div>
+                            <div 
+                                onClick={handleCopy}
+                                className="text-xl md:text-3xl font-bold cursor-pointer hover:opacity-50 transition-opacity flex items-center gap-3"
+                            >
+                                <span>kimad1728@gmail.com</span>
+                                {isCopied && <span className="text-xs font-mono bg-cyan-500 text-black px-1">COPIED</span>}
+                            </div>
+                        </div>
 
-                            {/* Name Input */}
-                            <div className="relative">
-                                <label className={`absolute left-0 -top-6 font-mono text-xs transition-colors duration-300 ${isFocused === 'name' ? 'text-cyan-400' : 'text-gray-500'}`}>
-                                    01 // {isArabic ? "أدخل الاسم" : "ENTER NAME"}
+                        {/* Social Grid */}
+                        <div className="grid grid-cols-2 gap-px bg-zinc-800 border border-zinc-800">
+                            {socialLinks.map((link) => (
+                                <a 
+                                    key={link.name} 
+                                    href={link.url}
+                                    className="bg-[#050505] p-4 hover:bg-white hover:text-black transition-colors duration-300 group/link"
+                                >
+                                    <div className="flex justify-between items-center mb-4">
+                                        <span className="text-[10px] font-mono text-zinc-600 group-hover/link:text-black/50">{link.id}</span>
+                                        <span className="text-xl group-hover/link:rotate-45 transition-transform duration-300">↗</span>
+                                    </div>
+                                    <div className="font-bold text-sm tracking-wider">{link.name}</div>
+                                </a>
+                            ))}
+                        </div>
+                    </div>
+                </div>
+
+                {/* 3. RIGHT COLUMN: The Terminal Form (7 cols) */}
+                <div className="lg:col-span-7 bg-[#080808] relative">
+                    
+                    {/* Decorative Corner Marks */}
+                    <div className="absolute top-0 left-0 w-4 h-4 border-l border-t border-cyan-500/50"></div>
+                    <div className="absolute bottom-0 right-0 w-4 h-4 border-r border-b border-cyan-500/50"></div>
+
+                    <form onSubmit={handleSubmit} className="h-full flex flex-col">
+                        
+                        {/* Feedback Messages */}
+                        <AnimatePresence>
+                            {(successMessage || errorMessage) && (
+                                <motion.div 
+                                    initial={{ height: 0, opacity: 0 }}
+                                    animate={{ height: 'auto', opacity: 1 }}
+                                    exit={{ height: 0, opacity: 0 }}
+                                    className={`px-8 py-4 font-mono text-xs uppercase border-b border-zinc-800 ${successMessage ? 'bg-green-900/20 text-green-400' : 'bg-red-900/20 text-red-400'}`}
+                                >
+                                    <span className="mr-4">STATUS_UPDATE:</span>
+                                    {successMessage || errorMessage}
+                                </motion.div>
+                            )}
+                        </AnimatePresence>
+
+                        {/* INPUT 01: Name */}
+                        <div className={`flex-1 border-b border-zinc-800 transition-colors duration-500 ${focusedField === 'name' ? 'bg-[#0a0a0a]' : ''}`}>
+                            <div className="p-8 md:p-12 h-full flex flex-col justify-center relative group">
+                                <label className={`font-mono text-xs uppercase mb-4 block transition-colors ${focusedField === 'name' ? 'text-cyan-400' : 'text-zinc-500'}`}>
+                                    01 // {isArabic ? "الاسم" : "IDENTITY"}
                                 </label>
                                 <input
                                     type="text"
-                                    name="name"
-                                    onFocus={() => setIsFocused('name')}
-                                    onBlur={() => setIsFocused(null)}
-                                    className="w-full bg-transparent border-b border-white/20 py-4 text-xl md:text-2xl font-bold text-white focus:outline-none focus:border-cyan-400 transition-colors duration-300 placeholder-transparent"
-                                    placeholder={isArabic ? "الاسم" : "John Doe"}
-                                    autoComplete="off"
+                                    required
+                                    value={formState.name}
+                                    onChange={(e) => setFormState({ ...formState, name: e.target.value })}
+                                    onFocus={() => setFocusedField('name')}
+                                    onBlur={() => setFocusedField(null)}
+                                    placeholder={isArabic ? "اسمك الكامل..." : "ENTER_FULL_NAME_"}
+                                    className="w-full bg-transparent text-2xl md:text-4xl font-bold placeholder-zinc-800 text-white outline-none"
                                 />
+                                {/* Active Indicator Line */}
+                                <div className={`absolute bottom-0 left-0 h-[2px] bg-cyan-400 transition-all duration-300 ${focusedField === 'name' ? 'w-full' : 'w-0'}`}></div>
                             </div>
+                        </div>
 
-                            {/* Email Input */}
-                            <div className="relative">
-                                <label className={`absolute left-0 -top-6 font-mono text-xs transition-colors duration-300 ${isFocused === 'email' ? 'text-cyan-400' : 'text-gray-500'}`}>
-                                    02 // {isArabic ? "أدخل البريد الإلكتروني" : "ENTER EMAIL"}
+                        {/* INPUT 02: Email */}
+                        <div className={`flex-1 border-b border-zinc-800 transition-colors duration-500 ${focusedField === 'email' ? 'bg-[#0a0a0a]' : ''}`}>
+                            <div className="p-8 md:p-12 h-full flex flex-col justify-center relative group">
+                                <label className={`font-mono text-xs uppercase mb-4 block transition-colors ${focusedField === 'email' ? 'text-cyan-400' : 'text-zinc-500'}`}>
+                                    02 // {isArabic ? "البريد الإلكتروني" : "COORDINATES"}
                                 </label>
                                 <input
                                     type="email"
-                                    name="email"
-                                    onFocus={() => setIsFocused('email')}
-                                    onBlur={() => setIsFocused(null)}
-                                    className="w-full bg-transparent border-b border-white/20 py-4 text-xl md:text-2xl font-bold text-white focus:outline-none focus:border-cyan-400 transition-colors duration-300 placeholder-transparent"
-                                    placeholder={isArabic ? "البريد الإلكتروني" : "john@example.com"}
-                                    autoComplete="off"
+                                    required
+                                    value={formState.email}
+                                    onChange={(e) => setFormState({ ...formState, email: e.target.value })}
+                                    onFocus={() => setFocusedField('email')}
+                                    onBlur={() => setFocusedField(null)}
+                                    placeholder={isArabic ? "بريدك الإلكتروني..." : "ENTER_EMAIL_ADDRESS_"}
+                                    className="w-full bg-transparent text-2xl md:text-4xl font-bold placeholder-zinc-800 text-white outline-none"
                                 />
+                                <div className={`absolute bottom-0 left-0 h-[2px] bg-cyan-400 transition-all duration-300 ${focusedField === 'email' ? 'w-full' : 'w-0'}`}></div>
                             </div>
+                        </div>
 
-                            {/* Message Input */}
-                            <div className="relative">
-                                <label className={`absolute left-0 -top-6 font-mono text-xs transition-colors duration-300 ${isFocused === 'message' ? 'text-cyan-400' : 'text-gray-500'}`}>
-                                    03 // {isArabic ? "تفاصيل المشروع" : "PROJECT DETAILS"}
+                        {/* INPUT 03: Message */}
+                        <div className={`flex-[1.5] border-b border-zinc-800 transition-colors duration-500 ${focusedField === 'message' ? 'bg-[#0a0a0a]' : ''}`}>
+                            <div className="p-8 md:p-12 h-full flex flex-col relative group">
+                                <label className={`font-mono text-xs uppercase mb-4 block transition-colors ${focusedField === 'message' ? 'text-cyan-400' : 'text-zinc-500'}`}>
+                                    03 // {isArabic ? "الرسالة" : "TRANSMISSION_DATA"}
                                 </label>
                                 <textarea
-                                    name="message"
-                                    rows="4"
-                                    onFocus={() => setIsFocused('message')}
-                                    onBlur={() => setIsFocused(null)}
-                                    className="w-full bg-transparent border-b border-white/20 py-4 text-xl md:text-2xl font-medium text-white focus:outline-none focus:border-cyan-400 transition-colors duration-300 placeholder-transparent resize-none"
-                                    placeholder={isArabic ? "أخبرني عن مشروعك..." : "Tell me about your project..."}
+                                    required
+                                    value={formState.message}
+                                    onChange={(e) => setFormState({ ...formState, message: e.target.value })}
+                                    onFocus={() => setFocusedField('message')}
+                                    onBlur={() => setFocusedField(null)}
+                                    placeholder={isArabic ? "أكتب رسالتك هنا..." : "INPUT_MESSAGE_CONTENT..."}
+                                    className="w-full h-full bg-transparent text-xl md:text-2xl font-medium placeholder-zinc-800 text-white outline-none resize-none leading-relaxed"
                                 />
+                                <div className={`absolute bottom-0 left-0 h-[2px] bg-cyan-400 transition-all duration-300 ${focusedField === 'message' ? 'w-full' : 'w-0'}`}></div>
                             </div>
+                        </div>
 
-                            {/* Submit Button */}
-                            <button
-                                type="submit"
-                                className="w-full bg-white text-black font-black uppercase tracking-widest py-6 border border-white hover:bg-transparent hover:text-white hover:border-cyan-400 transition-all duration-300 group relative overflow-hidden"
-                            >
-                                <span className="relative z-10 flex items-center justify-center gap-2">
-                                    {isArabic ? "إرسال الرسالة" : "Transmit Message"}
-                                    <span className="w-2 h-2 bg-black group-hover:bg-cyan-400 transition-colors"></span>
-                                </span>
-                            </button>
-
-                        </form>
-                    </div>
-
+                        {/* SUBMIT BUTTON */}
+                        <button
+                            type="submit"
+                            disabled={isLoading}
+                            className="py-8 md:py-10 bg-white text-black font-black text-xl tracking-widest hover:bg-cyan-400 transition-colors duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
+                        >
+                            {isLoading 
+                                ? (isArabic ? "جاري المعالجة..." : "PROCESSING_REQUEST...") 
+                                : (isArabic ? "إرسال" : "INITIALIZE_SEND")}
+                        </button>
+                    </form>
                 </div>
             </div>
-
-
-
+            
+            {/* Custom Stroke Text Style */}
+            <style jsx>{`
+                .stroke-text-white {
+                    -webkit-text-stroke: 1px rgba(255, 255, 255, 0.3);
+                }
+                .stroke-text-white:hover {
+                    -webkit-text-stroke: 0px;
+                }
+            `}</style>
         </section>
     );
 }

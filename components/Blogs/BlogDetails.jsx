@@ -2,7 +2,7 @@
 
 import React from 'react';
 import { motion } from 'framer-motion';
-import { Calendar, Clock, Eye, ArrowLeft, Share2, Bookmark, ThumbsUp, Code, Hash } from 'lucide-react'; // Added Code, Hash for technical aesthetic
+import { Calendar, Clock, Eye, ArrowLeft, Share2, Bookmark, ThumbsUp, Code, Hash, Terminal } from 'lucide-react';
 import Link from 'next/link';
 import Image from 'next/image';
 
@@ -15,14 +15,14 @@ const BlogDetails = ({ blog, relatedBlogs = [], language, slug }) => {
     visible: { 
       opacity: 1, 
       transition: { 
-        staggerChildren: 0.1, // Small, quick stagger for smooth sequencing
+        staggerChildren: 0.1, 
       } 
     },
   };
 
   const itemVariants = {
-    hidden: { opacity: 0, y: 15 }, // Subtle lift/fade-in
-    visible: { opacity: 1, y: 0, transition: { duration: 0.5 } },
+    hidden: { opacity: 0, y: 15 }, 
+    visible: { opacity: 1, y: 0, transition: { duration: 0.5, ease: 'easeOut' } },
   };
 
   // If no blog data, show not found state
@@ -34,7 +34,7 @@ const BlogDetails = ({ blog, relatedBlogs = [], language, slug }) => {
 
         <div className="relative z-20 w-full max-w-4xl mx-auto text-center">
 
-          {/* Back Button (Simplified motion) */}
+          {/* Back Button */}
           <div className="mb-8 text-left">
             <Link href={isArabic ? "/ar/blogs" : "/en/blogs"}>
               <motion.button
@@ -53,8 +53,9 @@ const BlogDetails = ({ blog, relatedBlogs = [], language, slug }) => {
             animate="visible"
             className="space-y-6"
           >
-            <motion.div variants={itemVariants} className="w-24 h-24 mx-auto bg-cyan-400/10 border border-cyan-400/20 rounded-full flex items-center justify-center">
-              <Eye size={32} className="text-cyan-400" />
+            {/* STYLED ERROR ICON CONTAINER (Sharp Border) */}
+            <motion.div variants={itemVariants} className="w-24 h-24 mx-auto bg-cyan-400/10 border-2 border-cyan-400/50 flex items-center justify-center">
+              <Eye size={32} className="text-cyan-400 animate-pulse" />
             </motion.div>
 
             <motion.h1 variants={itemVariants} className="text-4xl sm:text-5xl font-black tracking-tighter">
@@ -71,8 +72,8 @@ const BlogDetails = ({ blog, relatedBlogs = [], language, slug }) => {
             <motion.div variants={itemVariants} className="flex flex-col sm:flex-row gap-4 justify-center pt-8">
               <Link href={isArabic ? "/ar/blogs" : "/en/blogs"}>
                 <motion.button
-                  whileHover={{ scale: 1.02 }}
-                  className="px-6 py-3 bg-cyan-400 text-black font-bold uppercase rounded-none hover:bg-cyan-300 transition-colors"
+                  whileHover={{ scale: 1.02, backgroundColor: '#22d3ee' }} // Cyan 400
+                  className="px-6 py-3 bg-cyan-400 text-black font-bold uppercase border border-cyan-400 rounded-none transition-colors"
                 >
                   {isArabic ? "البحث في السجلات" : "Search Logs"}
                 </motion.button>
@@ -80,8 +81,8 @@ const BlogDetails = ({ blog, relatedBlogs = [], language, slug }) => {
 
               <Link href={isArabic ? "/ar" : "/en"}>
                 <motion.button
-                  whileHover={{ scale: 1.02 }}
-                  className="px-6 py-3 bg-transparent border border-white/20 text-white font-bold uppercase rounded-none hover:border-white/40 transition-colors"
+                  whileHover={{ scale: 1.02, borderColor: '#ffffff' }}
+                  className="px-6 py-3 bg-transparent border border-white/20 text-white font-bold uppercase rounded-none transition-colors"
                 >
                   {isArabic ? "العودة للرئيسية" : "Go Home"}
                 </motion.button>
@@ -95,11 +96,8 @@ const BlogDetails = ({ blog, relatedBlogs = [], language, slug }) => {
 
   // Format date
   const formatDate = (dateString) => {
-    const date = new Date(dateString);
-    return date.toLocaleDateString(isArabic ? 'ar-SA' : 'en-US', {
-      year: 'numeric',
-      month: 'long',
-      day: 'numeric'
+    return new Date(dateString).toLocaleDateString(isArabic ? 'ar-SA' : 'en-US', {
+      year: 'numeric', month: 'long', day: 'numeric'
     });
   };
 
@@ -115,7 +113,7 @@ const BlogDetails = ({ blog, relatedBlogs = [], language, slug }) => {
 
         <div className="w-full max-w-6xl mx-auto relative z-10 pt-16">
 
-          {/* Header Section (Simplified Motion, High Contrast) */}
+          {/* Header Section (Big Typography & HUD Metadata) */}
           <div className="mb-16 border-b-4 border-cyan-400/50 pb-6 md:pb-8 flex flex-col md:flex-row justify-between items-end">
             
             <motion.div variants={containerVariants} initial="hidden" animate="visible" className="md:w-3/5">
@@ -145,11 +143,11 @@ const BlogDetails = ({ blog, relatedBlogs = [], language, slug }) => {
 
             <motion.div
               variants={containerVariants} initial="hidden" animate="visible"
-              className="md:w-2/5 text-right mt-4 md:mt-0 border-l border-white/20 pl-6"
+              className="md:w-2/5 text-right mt-4 md:mt-0 border-l border-white/20 pl-6 font-mono"
             >
-              <motion.p variants={itemVariants} className="font-mono text-xs sm:text-sm text-gray-400">{isArabic ? "حالة النظام: متصل" : "SYSTEM STATUS: ONLINE"}</motion.p>
-              <motion.p variants={itemVariants} className="font-mono text-xs sm:text-sm text-gray-400">{isArabic ? "الموقع: عالمي" : "LOCATION: WORLDWIDE"}</motion.p>
-              <motion.p variants={itemVariants} className="font-mono text-xs sm:text-sm text-gray-400">SLUG: {slug || 'N/A'}</motion.p>
+              <motion.p variants={itemVariants} className="text-xs sm:text-sm text-gray-400">{isArabic ? "حالة النظام: متصل" : "SYSTEM STATUS: ONLINE"}</motion.p>
+              <motion.p variants={itemVariants} className="text-xs sm:text-sm text-gray-400">{isArabic ? "الموقع: عالمي" : "LOCATION: WORLDWIDE"}</motion.p>
+              <motion.p variants={itemVariants} className="text-xs sm:text-sm text-gray-400">SLUG: {slug || 'N/A'}</motion.p>
             </motion.div>
           </div>
 
@@ -189,7 +187,7 @@ const BlogDetails = ({ blog, relatedBlogs = [], language, slug }) => {
           </motion.div>
         </div>
 
-        {/* Featured Image (moved below header for better flow) */}
+        {/* Featured Image */}
         {blog.images[0] && (
             <motion.div
               initial={{ opacity: 0, y: 30 }}
@@ -217,9 +215,12 @@ const BlogDetails = ({ blog, relatedBlogs = [], language, slug }) => {
         {/* Background Elements */}
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(0,255,255,0.03),transparent_70%)]" />
 
-        <div className="w-full max-w-4xl mx-auto relative z-10">
+        <div 
+            className="w-full max-w-4xl mx-auto relative z-10"
+            dir={isArabic ? 'rtl' : 'ltr'} // Crucial for Arabic text flow
+        >
 
-          {/* Article Content */}
+          {/* Article Content Blocks */}
           <div className="mb-16">
             {blog.sections?.map((section, index) => (
               <motion.div
@@ -227,15 +228,15 @@ const BlogDetails = ({ blog, relatedBlogs = [], language, slug }) => {
                 initial={{ opacity: 0, y: 30 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.5, delay: 0.1 }}
-                viewport={{ once: true, amount: 0.2 }} // Optimized viewport trigger
-                className="mb-12 p-6 bg-black/50"
+                viewport={{ once: true, amount: 0.2 }}
+                className="mb-12 p-6 bg-black/50 border border-zinc-800"
               >
                 <h2 className="text-2xl sm:text-3xl font-black text-cyan-400 mb-6 flex items-center gap-3">
                   <Hash size={24} />
                   {section.title?.[isArabic ? 'ar' : 'en']}
                 </h2>
                 <div className="prose prose-lg prose-invert max-w-none">
-                  <div className="text-gray-300 leading-relaxed text-base sm:text-lg font-mono">
+                  <div className="text-gray-300 leading-relaxed text-base sm:text-lg font-mono" style={{ direction: isArabic ? 'rtl' : 'ltr' }}>
                     {section.content?.[isArabic ? 'ar' : 'en']?.split('\n\n').map((paragraph, pIndex) => (
                       <p key={pIndex} className="mb-4">
                         {paragraph}
@@ -265,12 +266,6 @@ const BlogDetails = ({ blog, relatedBlogs = [], language, slug }) => {
                     : "This article covers an important technical topic in web development. We will explore the fundamental concepts and best practices for achieving optimal performance in applications."
                   }
                 </p>
-                <p className="mb-4">
-                  {isArabic
-                    ? "تطوير الويب الحديث يتطلب فهماً عميقاً للتقنيات والأدوات المتاحة. هذا المقال سيوفر لك الإرشادات اللازمة لبناء تطبيقات ويب قوية وموثوقة."
-                    : "Modern web development requires a deep understanding of available technologies and tools. This article will provide you with the necessary guidance to build robust and reliable web applications."
-                  }
-                </p>
               </motion.div>
             )}
           </div>
@@ -288,7 +283,7 @@ const BlogDetails = ({ blog, relatedBlogs = [], language, slug }) => {
                 <Code size={24} className="text-cyan-400" />
                 {isArabic ? "الخاتمة: إغلاق السجل" : "CONCLUSION: LOG CLOSURE"}
               </h2>
-              <div className="text-gray-300 leading-relaxed text-base sm:text-lg font-mono">
+              <div className="text-gray-300 leading-relaxed text-base sm:text-lg font-mono" style={{ direction: isArabic ? 'rtl' : 'ltr' }}>
                 {blog.conclusion[isArabic ? 'ar' : 'en'].split('\n\n').map((paragraph, index) => (
                   <p key={index} className="mb-4">
                     {paragraph}
@@ -308,8 +303,8 @@ const BlogDetails = ({ blog, relatedBlogs = [], language, slug }) => {
           >
             <div className="flex items-center gap-4">
               <motion.button
-                whileHover={{ scale: 1.05, boxShadow: '0 0 10px rgba(34, 211, 238, 0.5)' }}
-                className="flex items-center gap-2 px-4 py-2 border border-white/20 hover:border-cyan-400 transition-all duration-300"
+                whileHover={{ scale: 1.05, borderColor: '#22d3ee', backgroundColor: 'rgba(34, 211, 238, 0.1)' }}
+                className="flex items-center gap-2 px-4 py-2 border border-white/20 hover:border-cyan-400 transition-all duration-300 rounded-none"
               >
                 <ThumbsUp size={16} className="text-cyan-400" />
                 <span className="text-sm font-mono font-medium">
@@ -318,8 +313,8 @@ const BlogDetails = ({ blog, relatedBlogs = [], language, slug }) => {
               </motion.button>
 
               <motion.button
-                whileHover={{ scale: 1.05, boxShadow: '0 0 10px rgba(34, 211, 238, 0.5)' }}
-                className="flex items-center gap-2 px-4 py-2 border border-white/20 hover:border-cyan-400 transition-all duration-300"
+                whileHover={{ scale: 1.05, borderColor: '#22d3ee', backgroundColor: 'rgba(34, 211, 238, 0.1)' }}
+                className="flex items-center gap-2 px-4 py-2 border border-white/20 hover:border-cyan-400 transition-all duration-300 rounded-none"
               >
                 <Bookmark size={16} className="text-cyan-400" />
                 <span className="text-sm font-mono font-medium">
@@ -329,8 +324,8 @@ const BlogDetails = ({ blog, relatedBlogs = [], language, slug }) => {
             </div>
 
             <motion.button
-              whileHover={{ scale: 1.05 }}
-              className="flex items-center gap-2 px-4 py-2 text-white border border-cyan-400 bg-cyan-400/10 hover:bg-cyan-400/20 transition-colors"
+              whileHover={{ scale: 1.05, backgroundColor: 'rgba(34, 211, 238, 0.2)' }}
+              className="flex items-center gap-2 px-4 py-2 text-white border border-cyan-400 bg-cyan-400/10 transition-colors rounded-none"
             >
               <Share2 size={16} className="text-cyan-400" />
               <span className="text-sm font-mono font-medium">
@@ -356,17 +351,17 @@ const BlogDetails = ({ blog, relatedBlogs = [], language, slug }) => {
                 {relatedBlogs.slice(0, 2).map((relatedBlog, index) => (
                   <motion.article
                     key={relatedBlog._id}
-                    initial={{ opacity: 0, x: index % 2 === 0 ? -20 : 20 }} // Simple x offset for staggering
+                    initial={{ opacity: 0, x: index % 2 === 0 ? -20 : 20 }}
                     whileInView={{ opacity: 1, x: 0 }}
                     transition={{ duration: 0.5, delay: index * 0.1 }}
                     viewport={{ once: true }}
-                    className="p-6 border border-white/10 hover:border-cyan-400 hover:bg-white/5 transition-all duration-300 font-mono"
+                    className="p-6 border border-white/10 hover:border-cyan-400 hover:bg-white/5 transition-all duration-300 font-mono rounded-none"
                   >
                     <h4 className="text-lg font-bold mb-2 text-cyan-400 flex items-center gap-2">
                       <Hash size={16} />
                       {relatedBlog.title?.[isArabic ? 'ar' : 'en'] || (isArabic ? 'مقال ذو صلة' : 'Related Asset')}
                     </h4>
-                    <p className="text-gray-400 text-sm mb-4">
+                    <p className="text-gray-400 text-sm mb-4" style={{ direction: isArabic ? 'rtl' : 'ltr' }}>
                       {relatedBlog.description?.[isArabic ? 'ar' : 'en']?.substring(0, 100) || (isArabic ? 'وصف مختصر...' : 'Brief description...')}...
                     </p>
                     <div className="flex justify-between items-center text-xs text-gray-500">
@@ -386,7 +381,7 @@ const BlogDetails = ({ blog, relatedBlogs = [], language, slug }) => {
         </div>
       </section>
       
-      {/* Global CSS for text-stroke (re-applied for creativity) */}
+      {/* Global CSS for text-stroke */}
       <style jsx global>{`
         .text-stroke-black {
           -webkit-text-stroke: 1px rgba(0,0,0,0.8);

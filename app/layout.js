@@ -5,6 +5,7 @@ import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import GoogleAnalytics from '@/components/GoogleAnalytics';
 import ClientWrapper from '@/components/ClientWrapper';
+import SocialLinks from '@/components/SocialLinks';
 
 const spaceGrotesk = Space_Grotesk({
   variable: '--font-space-grotesk',
@@ -22,6 +23,7 @@ export default function RootLayout({ children }) {
         <Navbar />
         <ClientWrapper>
           {children} {/* all page content */}
+          <SocialLinks/>
         </ClientWrapper>
         <Footer />
       </body>

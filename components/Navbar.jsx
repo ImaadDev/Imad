@@ -3,6 +3,9 @@
 import { useState, useEffect, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { usePathname, useRouter } from 'next/navigation';
+import Link from 'next/link';
+import Image from 'next/image'; // Ensure Image is imported
+import { Clock } from 'lucide-react'; 
 
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
@@ -18,15 +21,14 @@ export default function Navbar() {
     { name: isArabic ? 'المشاريع' : 'PROJECTS', href: '#projects' },
     { name: isArabic ? 'الخبرات' : 'EXPERIENCE', href: '#experience' },
     { name: isArabic ? 'تواصل' : 'CONTACT', href: '#contact' },
-    { name: isArabic ? 'مقالات' : 'BLOGS', href: '/blogs' }
-
+    { name: isArabic ? 'مقالات' : 'BLOGS', href: isArabic ? '/ar/blogs' : '/en/blogs' }
   ];
 
   // System Time & Scroll Logic
   const updateTime = useCallback(() => {
     const now = new Date();
-    // Timezone is set based on the current location (Riyadh, GMT+3) for accuracy
-    setTime(now.toLocaleTimeString('en-US', { hour12: false, hour: '2-digit', minute: '2-digit' }));
+    // Use 'sv' locale for standardized time format (HH:MM)
+    setTime(now.toLocaleTimeString('sv', { hour12: false, hour: '2-digit', minute: '2-digit' }));
   }, []);
 
   useEffect(() => {
@@ -52,26 +54,42 @@ export default function Navbar() {
 
   return (
     <>
-      {/* 1. FIXED NAVBAR HEADER (ALWAYS VISIBLE) 
-        The Logo, Time, and CTA have been removed from this section.
-        Styling is conditional based on scroll/open state for the brutalist effect.
-      */}
+      {/* 1. FIXED NAVBAR HEADER (THE HUD) */}
       <motion.nav
-        className='fixed top-0 left-0 right-0 z-50 transition-all duration-500'
+        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300`}
         initial={{ y: -100 }}
         animate={{ y: 0 }}
         transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
       >
-        <div className="max-w-7xl mx-auto px-4 md:px-6 h-20 flex items-center justify-between">
-          {/* Language Toggle */}
-          <button
-            onClick={toggleLanguage}
-            className="font-mono text-xs font-bold text-white border border-white/20 px-3 py-1 hover:bg-white hover:text-black transition-colors"
+        <div className="max-w-7xl mx-auto px-4 md:px-6 h-20 flex items-center justify-between relative">
+          
+          {/* LEFT: Logo Image (Updated) */}
+          <Link 
+            href={isArabic ? '/ar' : '/en'} 
+            className="relative z-50 group flex items-center"
           >
-            {isArabic ? 'ENGLISH' : 'العربية'}
-          </button>
+            <Image
+              src="/Imaadlogo.png"
+              alt="IMAD.KHAN Developer Logo"
+              width={120} 
+              height={32}
+              className="hidden md:block transition-opacity opacity-80 group-hover:opacity-100" 
+              priority 
+            />
+          </Link>
 
-          <div className="flex items-center gap-8 relative z-50">
+
+          
+          {/* RIGHT: Language Toggle + Menu Trigger */}
+          <div className="flex items-center gap-6 relative z-50">
+            
+            {/* Language Toggle */}
+            <button
+              onClick={toggleLanguage}
+              className="font-mono text-[10px] sm:text-xs font-bold text-white border border-white/20 px-3 py-1 hover:bg-white hover:text-black transition-colors"
+            >
+              {isArabic ? 'ENGLISH' : 'العربية'}
+            </button>
 
             {/* UNIFIED MENU TRIGGER (CONTROLS THE OVERLAY) */}
             <button
@@ -104,11 +122,12 @@ export default function Navbar() {
       <AnimatePresence>
         {isOpen && (
           <motion.div
-            initial={{ y: "-100%" }}
+            initial={{ y: isArabic ? "100%" : "-100%" }}
             animate={{ y: 0 }}
-            exit={{ y: "-100%" }}
+            exit={{ y: isArabic ? "100%" : "-100%" }}
             transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
             className="fixed inset-0 z-40 bg-[#0a0a0a] flex flex-col"
+            dir={isArabic ? 'rtl' : 'ltr'}
           >
             {/* Background Grid Pattern */}
             <div className="absolute inset-0 pointer-events-none opacity-20"
@@ -126,16 +145,16 @@ export default function Navbar() {
                       key={link.name}
                       href={link.href}
                       onClick={() => setIsOpen(false)}
-                      initial={{ opacity: 0, x: -50 }}
+                      initial={{ opacity: 0, [isArabic ? 'x' : 'x']: isArabic ? 50 : -50 }}
                       animate={{ opacity: 1, x: 0 }}
-                      exit={{ opacity: 0, x: -50 }}
+                      exit={{ opacity: 0, [isArabic ? 'x' : 'x']: isArabic ? 50 : -50 }}
                       transition={{ delay: 0.1 + index * 0.1, duration: 0.4 }}
-                      className="group flex items-center gap-6 py-2 lg:py-4"
+                      className={`group flex items-center gap-6 py-2 lg:py-4 ${isArabic ? 'justify-end' : ''}`}
                     >
-                      <span className="font-mono text-sm text-cyan-400 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                      <span className={`font-mono text-sm text-cyan-400 transition-opacity duration-300 ${isArabic ? 'order-2' : ''}`}>
                         0{index + 1}
                       </span>
-                      <span className="text-5xl md:text-7xl lg:text-8xl font-black text-transparent text-stroke-white hover:text-white transition-all duration-300 tracking-tighter">
+                      <span className="text-5xl md:text-7xl lg:text-8xl font-black text-transparent text-stroke-white hover:text-white transition-all duration-300 tracking-tighter leading-none">
                         {link.name}
                       </span>
                     </motion.a>
@@ -147,7 +166,7 @@ export default function Navbar() {
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
                   transition={{ delay: 0.5 }}
-                  className="hidden lg:flex flex-col justify-center border-l border-white/10 pl-12 h-1/2"
+                  className={`hidden lg:flex flex-col justify-center border-l lg:border-r-0 border-white/10 ${isArabic ? 'lg:border-r pr-12 text-right' : 'pl-12 text-left'} h-1/2`}
                 >
                   <p className="font-mono text-cyan-400 mb-4 text-sm">// {isArabic ? 'الحالة الحالية' : 'CURRENT_STATUS'}</p>
                   <h3 className="text-3xl font-bold text-white mb-6">
@@ -164,20 +183,7 @@ export default function Navbar() {
               </div>
             </div>
 
-            {/* Footer Section inside Menu */}
-            <div className="h-24 border-t border-white/10 flex items-center px-6 relative z-10 bg-black/50 backdrop-blur-sm">
-              <div className="max-w-7xl mx-auto w-full flex justify-between items-center">
-                <div>
-                  <p className="text-gray-500 font-mono text-[10px] uppercase mb-1">{isArabic ? 'تواصل معي' : 'Get in touch'}</p>
-                  <a href="mailto:hello@imad.dev" className="text-white font-bold hover:text-cyan-400 transition-colors">hello@imad.dev</a>
-                </div>
-                <div className="flex gap-6 text-white text-sm font-bold">
-                  {['GITHUB', 'LINKEDIN', 'TWITTER'].map((social) => (
-                    <a key={social} href="#" className="hover:text-cyan-400 transition-colors uppercase font-mono text-xs">{social}</a>
-                  ))}
-                </div>
-              </div>
-            </div>
+           
           </motion.div>
         )}
       </AnimatePresence>
