@@ -12,10 +12,7 @@ const spaceGrotesk = Space_Grotesk({
 export async function generateMetadata() {
   return {
     metadataBase: new URL('https://www.imadkhan.online'),
-    title: {
-      default: 'Imad Hussain Khan | Full-Stack Web Developer',
-      template: '%s | Imad Hussain Khan'
-    },
+    title: 'Imad Hussain Khan | Full-Stack Web Developer',
     description: 'Portfolio of Imad Hussain Khan, a skilled Full-Stack Web Developer & Designer specializing in React.js, Node.js, MERN Stack, and modern web technologies.',
     keywords: [
       'Imad Hussain Khan',
