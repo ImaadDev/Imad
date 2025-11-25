@@ -59,7 +59,6 @@ export async function generateMetadata() {
     keywords,
     authors: [{ name: 'Imad Hussain Khan' }],
     robots: 'index, follow',
-    viewport: 'width=device-width, initial-scale=1',
     alternates: {
       canonical: 'https://www.imadkhan.online/en',
       languages: {
@@ -108,6 +107,11 @@ export async function generateMetadata() {
     },
   };
 }
+
+export const viewport = {
+  width: 'device-width',
+  initialScale: 1,
+};
 
 const Page = () => (
   <>

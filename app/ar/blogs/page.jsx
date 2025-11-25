@@ -24,7 +24,6 @@ export async function generateMetadata() {
     ],
     authors: [{ name: 'عماد حسين خان' }],
     robots: 'index, follow',
-    viewport: 'width=device-width, initial-scale=1',
     alternates: {
       canonical: 'https://www.imadkhan.online/ar/blogs',
       languages: {
@@ -49,6 +48,11 @@ export async function generateMetadata() {
     },
   };
 }
+
+export const viewport = {
+  width: 'device-width',
+  initialScale: 1,
+};
 
 const BlogPage = async () => {
   const blogs = await client.fetch(`
