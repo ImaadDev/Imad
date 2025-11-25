@@ -195,18 +195,18 @@ export default function Projects() {
 
           {/* Image Container - Responsive Design */}
           {activeProject && (
-            <div className="relative w-full border border-white/20 p-2 bg-white/5" style={{ aspectRatio: '4 / 3' }}>
+            <div className="relative w-full border border-white/20 p-2 bg-white/5">
               {/* Tech Corner Markers (CSS only, no heavy renders) */}
               <div className="absolute top-0 left-0 w-4 h-4 border-t-2 border-l-2 border-cyan-400 -mt-1 -ml-1 z-20"></div>
               <div className="absolute top-0 right-0 w-4 h-4 border-t-2 border-r-2 border-cyan-400 -mt-1 -mr-1 z-20"></div>
               <div className="absolute bottom-0 left-0 w-4 h-4 border-b-2 border-l-2 border-cyan-400 -mb-1 -ml-1 z-20"></div>
               <div className="absolute bottom-0 right-0 w-4 h-4 border-b-2 border-r-2 border-cyan-400 -mb-1 -mr-1 z-20"></div>
 
-              <div className="relative w-full h-full overflow-hidden bg-black">
+              <div className="relative w-full overflow-hidden bg-black">
                 <AnimatePresence mode='popLayout'>
                   <motion.div
                     key={activeProject._id}
-                    className="absolute inset-0"
+                    className="relative w-full"
                     initial={{ opacity: 0, scale: 1.05 }}
                     animate={{ opacity: 1, scale: 1 }}
                     exit={{ opacity: 0 }}
@@ -215,8 +215,9 @@ export default function Projects() {
                     <Image
                       src={activeProject.image?.asset?.url || activeProject.image}
                       alt={activeProject.title}
-                      fill
-                      className="object-cover"
+                      width={800}
+                      height={600}
+                      className="w-full h-auto"
                       sizes="(max-width: 640px) 100vw, (max-width: 1024px) 100vw, 50vw"
                       priority={activeProject._id === projects[0]?._id}
                       placeholder="blur"

@@ -121,7 +121,6 @@ export default function Testimonials() {
                                 exit={{ opacity: 0, scale: 1.05, filter: "grayscale(100%)" }}
                                 transition={{ duration: 0.5, ease: "circOut" }}
                                 className="relative w-full border border-white/20 bg-white/5 p-2"
-                                style={{ aspectRatio: '4 / 5' }}
                             >
                                 {/* Tech Corners */}
                                 <div className="absolute top-0 left-0 w-8 h-8 border-t-2 border-l-2 border-cyan-400 -mt-px -ml-px z-20"></div>
@@ -132,8 +131,9 @@ export default function Testimonials() {
                                     <Image
                                         src={testimonials[currentIndex].image}
                                         alt={testimonials[currentIndex].client}
-                                        fill
-                                        className="object-cover opacity-90"
+                                        width={400}
+                                        height={500}
+                                        className="w-full h-auto opacity-90"
                                         sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
                                         priority={currentIndex === 0}
                                         placeholder="blur"

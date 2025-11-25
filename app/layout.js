@@ -17,8 +17,9 @@ export default function RootLayout({ children }) {
     <html lang="en">
       <head>
       </head>
+      <GoogleAnalytics />
       <body className={`${spaceGrotesk.variable} antialiased`}>
-        <GoogleAnalytics />
+  
         <Navbar />
         <ClientWrapper>
           {children} {/* all page content */}
