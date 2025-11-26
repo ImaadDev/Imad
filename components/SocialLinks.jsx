@@ -25,7 +25,6 @@ export default function FixedSocialPanel({ isArabic = false }) {
         event: 'social_click',
         social_name: socialName,
       });
-      console.log(`GTM Event: ${socialName}`); // optional for testing
     }
   };
 
