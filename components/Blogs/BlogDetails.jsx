@@ -105,9 +105,12 @@ const BlogDetails = ({ blog, relatedBlogs = [], language, slug }) => {
   const currentUrl = typeof window !== 'undefined' ? window.location.href : '';
   const shareTitle = blog?.title?.[isArabic ? 'ar' : 'en'] || '';
   const shareText = blog?.description?.[isArabic ? 'ar' : 'en'] || '';
+  const shareImage = blog?.images?.[0]?.asset?.url || blog?.images?.[0] || '';
+
+  console.log('Share Image URL:', shareImage);
 
   const shareToFacebook = () => {
-    const url = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(currentUrl)}`;
+    const url = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(currentUrl)}&t=${encodeURIComponent(shareTitle)}&description=${encodeURIComponent(shareText)}${shareImage ? `&picture=${encodeURIComponent(shareImage)}` : ''}`;
     window.open(url, '_blank', 'width=600,height=400');
   };
 
