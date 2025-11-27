@@ -77,6 +77,8 @@ const BlogsPage = async () => {
     }
   `);
 
+
+
   return (
     <>
       <BlogsHero />
