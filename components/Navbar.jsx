@@ -36,9 +36,11 @@ const content = {
         navLinks: [
             { name: 'ABOUT', href: '/en/about' },
             { name: 'PROJECTS', href: '#projects' },
+            { name: 'BLOGS', href: '/en/blogs' },
+            { name: 'CONTACT', href: '/en/contact' },
             { name: 'EXPERIENCE', href: '#experience' },
-            { name: 'CONTACT', href: '#contact' },
-            { name: 'BLOGS', href: '/en/blogs' } 
+            
+            
         ]
     },
     ar: {
@@ -54,9 +56,11 @@ const content = {
         navLinks: [
             { name: 'عني', href: '/ar/about' },
             { name: 'المشاريع', href: '#projects' },
+            { name: 'مقالات', href: '/ar/blogs' },
+            { name: 'تواصل', href: '/ar/contact' },
             { name: 'الخبرات', href: '#experience' },
-            { name: 'تواصل', href: '#contact' },
-            { name: 'مقالات', href: '/ar/blogs' } 
+            
+            
         ]
     }
 };

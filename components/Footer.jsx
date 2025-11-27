@@ -82,6 +82,14 @@ const [time, setTime] = useState("");
                     <div className="text-xs text-zinc-500 font-mono uppercase mt-auto">
                         © {currentYear} {isArabic ? "جميع الحقوق محفوظة" : "All Rights Reserved"}
                     </div>
+                    <div className="mt-2">
+                        <a
+                            href={isArabic ? "/ar/privacy-policy" : "/en/privacy-policy"}
+                            className="text-xs text-zinc-500 hover:text-cyan-400 transition-colors font-mono uppercase"
+                        >
+                            {isArabic ? "سياسة الخصوصية" : "Privacy Policy"}
+                        </a>
+                    </div>
                 </div>
 
                 {/* Col 2: Socials (Clean List) */}

@@ -128,13 +128,28 @@ const content = {
     }
 };
 
+/**
+ * Custom hook to simulate usePathname by reading window.location.pathname.
+ */
+const usePathnameSimulation = () => {
+    const [pathname, setPathname] = useState('/');
+
+    useEffect(() => {
+        if (typeof window !== 'undefined') {
+            setPathname(window.location.pathname || '/');
+        }
+    }, []);
+
+    return pathname;
+};
+
 export default function ArchitectPortfolio() {
-    const [lang, setLang] = useState('en');
+    const pathname = usePathnameSimulation();
+    const lang = pathname.startsWith("/ar") ? "ar" : "en";
     const [hoveredExp, setHoveredExp] = useState(0); // Default to first item active
-    
+
     const t = content[lang];
     const isRTL = lang === 'ar';
-    const toggleLang = () => setLang(prev => prev === 'en' ? 'ar' : 'en');
 
     return (
         <div className={`min-h-screen bg-[#030303] text-[#e5e5e5] font-sans selection:bg-cyan-500/30 selection:text-cyan-200 overflow-x-hidden ${isRTL ? 'rtl' : 'ltr'}`} dir={isRTL ? 'rtl' : 'ltr'}>
