@@ -54,6 +54,10 @@ export const viewport = {
   initialScale: 1,
 };
 
+
+export const revalidate = 60; // ISR: regenerate page every 60 seconds
+
+
 const BlogsPage = async () => {
   const blogs = await client.fetch(`
     *[_type == "blog"] | order(publishedAt desc) {

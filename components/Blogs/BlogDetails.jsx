@@ -2,7 +2,7 @@
 
 import React from 'react';
 import { motion } from 'framer-motion';
-import { Calendar, Clock, Eye, ArrowLeft, Share2, Bookmark, ThumbsUp, Code, Hash, Terminal } from 'lucide-react';
+import { Calendar, Clock, Eye, ArrowLeft, Share2, Bookmark, ThumbsUp, Code, Hash, Terminal, Facebook, Instagram, Twitter, MessageCircle, Copy } from 'lucide-react';
 import Link from 'next/link';
 import Image from 'next/image';
 
@@ -99,6 +99,38 @@ const BlogDetails = ({ blog, relatedBlogs = [], language, slug }) => {
     return new Date(dateString).toLocaleDateString(isArabic ? 'ar-SA' : 'en-US', {
       year: 'numeric', month: 'long', day: 'numeric'
     });
+  };
+
+  // Share functions
+  const currentUrl = typeof window !== 'undefined' ? window.location.href : '';
+  const shareTitle = blog?.title?.[isArabic ? 'ar' : 'en'] || '';
+  const shareText = blog?.description?.[isArabic ? 'ar' : 'en'] || '';
+
+  const shareToFacebook = () => {
+    const url = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(currentUrl)}`;
+    window.open(url, '_blank', 'width=600,height=400');
+  };
+
+  const shareToInstagram = () => {
+    // Instagram doesn't have a direct share URL, so we'll copy to clipboard
+    navigator.clipboard.writeText(`${shareTitle}\n\n${shareText}\n\n${currentUrl}`);
+    // Could show a toast notification here
+    alert(isArabic ? 'تم نسخ الرابط إلى الحافظة! يمكنك مشاركته على إنستغرام' : 'Link copied to clipboard! You can share it on Instagram');
+  };
+
+  const shareToWhatsApp = () => {
+    const url = `https://wa.me/?text=${encodeURIComponent(`${shareTitle}\n\n${shareText}\n\n${currentUrl}`)}`;
+    window.open(url, '_blank');
+  };
+
+  const shareToTwitter = () => {
+    const url = `https://twitter.com/intent/tweet?text=${encodeURIComponent(shareTitle)}&url=${encodeURIComponent(currentUrl)}`;
+    window.open(url, '_blank', 'width=600,height=400');
+  };
+
+  const copyLink = () => {
+    navigator.clipboard.writeText(currentUrl);
+    alert(isArabic ? 'تم نسخ الرابط إلى الحافظة!' : 'Link copied to clipboard!');
   };
 
   return (
@@ -323,15 +355,62 @@ const BlogDetails = ({ blog, relatedBlogs = [], language, slug }) => {
               </motion.button>
             </div>
 
-            <motion.button
-              whileHover={{ scale: 1.05, backgroundColor: 'rgba(34, 211, 238, 0.2)' }}
-              className="flex items-center gap-2 px-4 py-2 text-white border border-cyan-400 bg-cyan-400/10 transition-colors rounded-none"
-            >
-              <Share2 size={16} className="text-cyan-400" />
-              <span className="text-sm font-mono font-medium">
-                {isArabic ? "مشاركة الرابط" : "SHARE LINK"}
-              </span>
-            </motion.button>
+            <div className="flex items-center gap-2 flex-wrap">
+              <motion.button
+                onClick={shareToFacebook}
+                whileHover={{ scale: 1.05, backgroundColor: 'rgba(34, 211, 238, 0.2)' }}
+                className="flex items-center gap-2 px-3 py-2 text-white border border-cyan-400 bg-cyan-400/10 hover:bg-cyan-400/20 transition-colors rounded-none"
+              >
+                <Facebook size={16} className="text-cyan-400" />
+                <span className="text-xs font-mono font-medium hidden sm:inline">
+                  {isArabic ? "فيسبوك" : "FACEBOOK"}
+                </span>
+              </motion.button>
+
+              <motion.button
+                onClick={shareToInstagram}
+                whileHover={{ scale: 1.05, backgroundColor: 'rgba(34, 211, 238, 0.2)' }}
+                className="flex items-center gap-2 px-3 py-2 text-white border border-cyan-400 bg-cyan-400/10 hover:bg-cyan-400/20 transition-colors rounded-none"
+              >
+                <Instagram size={16} className="text-cyan-400" />
+                <span className="text-xs font-mono font-medium hidden sm:inline">
+                  {isArabic ? "إنستغرام" : "INSTAGRAM"}
+                </span>
+              </motion.button>
+
+              <motion.button
+                onClick={shareToWhatsApp}
+                whileHover={{ scale: 1.05, backgroundColor: 'rgba(34, 211, 238, 0.2)' }}
+                className="flex items-center gap-2 px-3 py-2 text-white border border-cyan-400 bg-cyan-400/10 hover:bg-cyan-400/20 transition-colors rounded-none"
+              >
+                <MessageCircle size={16} className="text-cyan-400" />
+                <span className="text-xs font-mono font-medium hidden sm:inline">
+                  {isArabic ? "واتساب" : "WHATSAPP"}
+                </span>
+              </motion.button>
+
+              <motion.button
+                onClick={shareToTwitter}
+                whileHover={{ scale: 1.05, backgroundColor: 'rgba(34, 211, 238, 0.2)' }}
+                className="flex items-center gap-2 px-3 py-2 text-white border border-cyan-400 bg-cyan-400/10 hover:bg-cyan-400/20 transition-colors rounded-none"
+              >
+                <Twitter size={16} className="text-cyan-400" />
+                <span className="text-xs font-mono font-medium hidden sm:inline">
+                  {isArabic ? "تويتر" : "TWITTER"}
+                </span>
+              </motion.button>
+
+              <motion.button
+                onClick={copyLink}
+                whileHover={{ scale: 1.05, backgroundColor: 'rgba(34, 211, 238, 0.2)' }}
+                className="flex items-center gap-2 px-3 py-2 text-white border border-cyan-400 bg-cyan-400/10 hover:bg-cyan-400/20 transition-colors rounded-none"
+              >
+                <Copy size={16} className="text-cyan-400" />
+                <span className="text-xs font-mono font-medium hidden sm:inline">
+                  {isArabic ? "نسخ" : "COPY"}
+                </span>
+              </motion.button>
+            </div>
           </motion.div>
 
           {/* Related Articles */}
@@ -369,7 +448,7 @@ const BlogDetails = ({ blog, relatedBlogs = [], language, slug }) => {
                             <Clock size={12} />
                             {relatedBlog.readTime || 5} {isArabic ? 'دقيقة' : 'min read'}
                         </span>
-                        <Link href={`/${language}/blogs/${relatedBlog.slug}`} className="text-cyan-400 hover:text-white transition-colors uppercase">
+                        <Link href={`/${language}/blogs/${relatedBlog.slug?.current || relatedBlog.slug}`} className="text-cyan-400 hover:text-white transition-colors uppercase">
                             {isArabic ? "قراءة" : "VIEW LOG"}
                         </Link>
                     </div>
